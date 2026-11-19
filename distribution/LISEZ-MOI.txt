@@ -1,0 +1,140 @@
+REMPART - Bloqueur de contenu adulte
+Version {{VERSION}} pour Android 8.0 et plus récent
+
+Rempart aide à arrêter le porno. Il bloque les sites pour adultes et les sites
+d'images très dénudées, dans tous les navigateurs (navigation privée comprise)
+et dans les navigateurs cachés dans certaines applis comme Xender ou Vidmate.
+
+C'est gratuit et open source. Pas de pub, pas d'achat, pas de compte à créer.
+Rien ne sort de ton téléphone.
+
+Rempart est fait pour se protéger soi-même. Ne l'installe jamais sur le téléphone
+de quelqu'un d'autre : l'appli n'a pas de mode caché et ne sert pas à surveiller.
+
+
+------------------------------------------------------------------
+COMMENT ÇA MARCHE
+------------------------------------------------------------------
+
+Rempart combine trois protections.
+
+1. Un filtre réseau sur le téléphone
+   Android affiche une petite clé en haut de l'écran : c'est un "VPN" local.
+   Il ne fait passer aucune donnée par un serveur de Rempart. Il vérifie
+   seulement les adresses des sites avant qu'ils s'ouvrent, avec une liste
+   d'environ 150 000 sites pour adultes mise à jour chaque semaine. Google,
+   Bing, YouTube et DuckDuckGo sont aussi forcés en mode strict.
+
+2. La surveillance des navigateurs (accessibilité d'Android)
+   Rempart lit l'adresse de la page ouverte. Si c'est un site pour adultes,
+   il ferme la page et affiche un écran d'encouragement à la place. Rien
+   n'est gardé ni envoyé : c'est lu sur le téléphone puis oublié.
+
+3. Le verrou
+   Une fois verrouillé, Rempart ne peut plus être coupé ni désinstallé.
+   Il reste deux façons d'en sortir :
+   - le code de ton partenaire de confiance (un ami, ton conjoint, un mentor),
+     qui déverrouille tout de suite ;
+   - une demande de déverrouillage qui prend entre 24 h et 7 jours (tu choisis
+     la durée avant de verrouiller). Tu peux l'annuler à tout moment, et c'est
+     souvent le bon choix.
+
+   Pour être honnête : une réinitialisation d'usine du téléphone efface
+   toujours tout. Aucune appli ne peut l'empêcher, et Rempart ne le cache pas.
+
+
+------------------------------------------------------------------
+INSTALLER REMPART
+------------------------------------------------------------------
+
+1. Télécharge le fichier {{APK}} depuis ce dossier, directement sur ton
+   téléphone Android.
+2. Ouvre-le (depuis la notification de téléchargement, ou l'appli Fichiers,
+   dossier Download).
+3. Android va dire qu'il bloque les applis de "sources inconnues". Touche
+   "Paramètres", autorise ton navigateur (ou l'appli Fichiers) à installer
+   des applis, puis reviens en arrière.
+4. Touche "Installer".
+5. Google Play Protect peut afficher un avertissement, parce que Rempart ne
+   vient pas encore du Play Store. Touche "Plus de détails" puis "Installer
+   quand même". Le code de l'appli est public, tu peux le vérifier (lien plus bas).
+
+
+------------------------------------------------------------------
+LA PREMIÈRE FOIS
+------------------------------------------------------------------
+
+1. Coche "J'installe Rempart pour moi-même" et continue.
+2. Rempart enchaîne tout seul les autorisations dont il a besoin. Dis oui à
+   chaque écran, puis reviens dans l'appli :
+   - le filtre réseau (la demande de connexion VPN) ;
+   - aucune limite de batterie, pour qu'Android ne coupe jamais le filtre ;
+   - le lancement automatique, sur les téléphones qui en ont un réglage
+     (Tecno, Infinix, itel, Xiaomi, Oppo, Vivo, Huawei...). Dans l'écran qui
+     s'ouvre, cherche Rempart dans la liste et active-le ;
+   - l'accessibilité : touche "Rempart" dans la liste, puis active-le ;
+   - la protection contre la désinstallation (administrateur de l'appareil).
+3. Choisis ton partenaire de confiance et son code, et la durée d'attente
+   pour déverrouiller sans lui.
+4. Verrouille quand tu te sens prêt.
+
+Conseil : avant de verrouiller, va dans Paramètres > Réseau > VPN, touche la
+roue dentée à côté de Rempart, et active "VPN permanent" et "Bloquer les
+connexions sans VPN". Comme ça, aucun site ne s'ouvre si le filtre s'arrête.
+
+
+------------------------------------------------------------------
+METTRE À JOUR
+------------------------------------------------------------------
+
+Quand une nouvelle version arrive dans ce dossier, télécharge-la et installe-la
+par-dessus. Tes réglages, ton partenaire et ton verrou sont gardés. Si une
+autorisation saute pendant la mise à jour, Rempart te prévient et te la
+redemande à l'ouverture.
+
+
+------------------------------------------------------------------
+TES DONNÉES
+------------------------------------------------------------------
+
+Rempart ne collecte rien et n'envoie rien. Pas de compte, pas de statistiques,
+pas de publicité. Seuls quelques compteurs (contenus bloqués, jours sans
+rechute) et un journal des événements de protection restent sur le téléphone.
+Ce journal ne contient jamais les sites visités.
+
+Le code de ton partenaire n'est pas stocké : Rempart n'en garde qu'une
+empreinte chiffrée.
+
+
+------------------------------------------------------------------
+CE QUE REMPART NE FAIT PAS (ENCORE)
+------------------------------------------------------------------
+
+- La détection des images trop dénudées par l'image elle-même est en
+  préparation. Aujourd'hui, Rempart bloque par adresse de site et par
+  mots-clés.
+- Pas de version iPhone pour l'instant.
+- Sur certains téléphones très agressifs sur la batterie, le filtre peut
+  s'arrêter si le lancement automatique n'est pas autorisé.
+
+
+------------------------------------------------------------------
+BESOIN D'AIDE ?
+------------------------------------------------------------------
+
+Tu n'as pas à t'en sortir seul. Un médecin, un psychologue ou un
+addictologue peut vraiment t'aider. Si tu as des idées suicidaires, appelle
+tout de suite les urgences de ton pays (en France : 3114, gratuit, jour et nuit).
+
+
+------------------------------------------------------------------
+VÉRIFIER LE FICHIER ET LE CODE
+------------------------------------------------------------------
+
+Code source (licence GPL-3.0) : https://github.com/Tidaler/Rempart
+
+Empreinte SHA-256 du fichier {{APK}} :
+{{SHA256}}
+
+Si l'empreinte du fichier que tu as téléchargé est différente, ne l'installe
+pas : il a peut-être été modifié.
