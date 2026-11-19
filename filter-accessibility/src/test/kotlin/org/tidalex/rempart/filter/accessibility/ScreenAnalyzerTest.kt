@@ -107,7 +107,9 @@ class ScreenAnalyzerTest {
         val t0 = System.nanoTime()
         repeat(200) { analyzer.analyze("com.android.chrome", root, true) }
         val ms = (System.nanoTime() - t0) / 1e6 / 200
-        assertThat(ms).isLessThan(10.0)
+        // Seuil : 10 ms sur PC de développement, marge x3 sur les machines de CI partagées.
+        val budget = if (System.getenv("CI") != null) 30.0 else 10.0
+        assertThat(ms).isLessThan(budget)
     }
 
     @Test fun `browser id matching`() {

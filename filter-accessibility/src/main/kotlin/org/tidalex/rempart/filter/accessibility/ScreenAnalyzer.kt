@@ -92,7 +92,7 @@ class ScreenAnalyzer(
 
     companion object {
         const val OWN_PACKAGE = "org.tidalex.rempart"
-        private const val MAX_TEXT = 20_000
+        private const val MAX_TEXT = 8_000 // assez pour titre + début de page ; borne le coût CPU
     }
 }
 
