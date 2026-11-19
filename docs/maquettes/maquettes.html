@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rempart – maquettes</title>
+<style>
+  :root { --bg:#F6F3EE; --surface:#FFFCF8; --primary:#1F4E5F; --pc:#CFE6EC; --sec:#B0703C; --sc:#F6DFC9; --sv:#E9E3DA; --on:#1B1C1A; --muted:#4A4740; --err:#B3261E; }
+  body { margin:0; padding:32px; background:#d9d4cb; font-family: Roboto, "Segoe UI", Arial, sans-serif; color:var(--on); display:flex; flex-wrap:wrap; gap:32px; }
+  .phone { width:360px; height:780px; background:var(--bg); border-radius:28px; padding:28px 20px; box-sizing:border-box; display:flex; flex-direction:column; gap:14px; overflow:hidden; }
+  h1 { font-family: Georgia, serif; font-weight:600; font-size:28px; line-height:34px; margin:6px 0; }
+  h2 { font-size:17px; margin:0; }
+  p { margin:0; font-size:15px; line-height:22px; }
+  .small { font-size:13px; line-height:19px; color:var(--muted); }
+  .card { background:var(--surface); border-radius:20px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .pc { background:var(--pc); } .sc { background:var(--sc); } .sv { background:var(--sv); }
+  .btn { background:var(--primary); color:#fff; border-radius:24px; padding:12px 18px; text-align:center; font-weight:600; font-size:15px; }
+  .tonal { background:var(--pc); color:#0B2A33; border-radius:24px; padding:10px 16px; font-weight:600; font-size:14px; align-self:flex-start; }
+  .outline { border:1.5px solid #7b776f; color:var(--primary); border-radius:24px; padding:10px 16px; text-align:center; font-weight:600; font-size:14px; }
+  .row { display:flex; align-items:center; gap:10px; }
+  .ok, .ko { width:22px; height:22px; border-radius:50%; flex:none; color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .ok { background:var(--primary); } .ko { background:var(--err); }
+  .grow { flex:1; }
+  .big { font-family: Georgia, serif; font-size:24px; font-weight:600; }
+  .field { border:1.5px solid #7b776f; border-radius:8px; padding:12px; font-size:15px; color:var(--muted); }
+  .bar { height:6px; border-radius:3px; background:#cfc9bf; overflow:hidden; } .bar > div { height:100%; background:var(--primary); }
+  .circle { width:190px; height:190px; border-radius:50%; background:var(--pc); align-self:center; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:17px; }
+  .center { text-align:center; }
+  .check { width:20px; height:20px; border-radius:4px; background:var(--primary); flex:none; }
+</style>
+</head>
+<body>
+
+<!-- 1. Accueil / consentement -->
+<section class="phone" id="welcome">
+  <h1>Bienvenue dans Rempart</h1>
+  <p>Rempart t'aide à te libérer de la pornographie en bloquant les sites pour adultes et les images trop dénudées sur ce téléphone, dans tous les navigateurs et dans les applis.</p>
+  <p>Gratuit, open source, sans publicité, sans achat. Aucune donnée collectée.</p>
+  <div class="card pc">
+    <div class="row"><div class="check"></div><p>J'installe Rempart pour moi-même, sur mon propre téléphone, de mon plein gré.</p></div>
+    <p class="small">Rempart ne doit jamais être installé à l'insu de quelqu'un. Ni mode caché, ni surveillance à distance.</p>
+  </div>
+  <p style="color:var(--primary);font-weight:600">Lire la politique de confidentialité</p>
+  <div class="grow"></div>
+  <div class="btn">Continuer</div>
+</section>
+
+<!-- 2. Mise en place -->
+<section class="phone" id="setup">
+  <h1>Mise en place</h1>
+  <div class="card"><div class="row"><div class="ok">✓</div><div><h2>Filtre réseau</h2><p class="small">Activé</p></div></div>
+    <p class="small">VPN local : filtre les sites adultes, impose la recherche sécurisée. Aucun serveur distant.</p></div>
+  <div class="card"><div class="row"><div class="ko">!</div><div><h2>Navigateurs et applis</h2><p class="small">Désactivé</p></div></div>
+    <p class="small">Ferme les pages adultes même en navigation privée et dans Xender, Vidmate…</p><div class="tonal">Activer</div></div>
+  <div class="card"><div class="row"><div class="ko">!</div><div><h2>Anti-désinstallation</h2><p class="small">Désactivé</p></div></div><div class="tonal">Activer</div></div>
+  <div class="card sc"><h2>VPN permanent (recommandé)</h2><p class="small">Réglages › Réseau › VPN › Rempart : « VPN permanent » + « Bloquer les connexions sans VPN ».</p></div>
+  <div class="btn">Choisir mon partenaire de confiance</div>
+</section>
+
+<!-- 3. Partenaire -->
+<section class="phone" id="partner">
+  <h1>Partenaire de confiance</h1>
+  <p class="small">Une personne de confiance garde le code qui déverrouille Rempart tout de suite. Sans ce code : délai d'attente.</p>
+  <div class="field">Prénom du partenaire : Paul</div>
+  <div class="field">Téléphone (facultatif)</div>
+  <div class="row"><div class="ok">●</div><p>Mon partenaire tape lui-même le code</p></div>
+  <div class="card sc"><p class="small">Donne le téléphone à ton partenaire pour qu'il tape son code sans que tu le voies.</p></div>
+  <div class="field">Code •••••••••••</div>
+  <div class="field">Confirmer le code •••••••••••</div>
+  <h2>Délai sans partenaire : 72 h</h2>
+  <div class="bar"><div style="width:33%"></div></div>
+  <div class="btn">Enregistrer</div>
+</section>
+
+<!-- 4. Tableau de bord -->
+<section class="phone" id="home">
+  <h1>Rempart</h1>
+  <div class="card pc"><div class="big">23 jours sans rechute</div><p class="small">Record : 41 jours · prochain palier : 30 jours</p><p class="small">1 284 contenus bloqués</p><p style="color:var(--primary);font-weight:600;font-size:14px">J'ai rechuté</p></div>
+  <div class="btn">J'ai une envie, aide-moi</div>
+  <div class="card"><h2>Protections</h2>
+    <div class="row"><div class="ok">✓</div><p>Filtre réseau</p></div>
+    <div class="row"><div class="ok">✓</div><p>Navigateurs et applis</p></div>
+    <div class="row"><div class="ok">✓</div><p>Anti-désinstallation</p></div></div>
+  <div class="card sv"><h2>Verrouillé</h2><div class="tonal">Déverrouiller</div></div>
+  <div class="outline">Ressources d'aide</div>
+  <div class="outline">Journal d'intégrité</div>
+</section>
+
+<!-- 5. Déverrouillage -->
+<section class="phone" id="unlock">
+  <h1>Déverrouiller Rempart</h1>
+  <div class="card"><h2>Avec le code du partenaire</h2><div class="field">Code du partenaire</div><div class="btn" style="align-self:flex-start">Valider</div><p style="color:var(--primary);font-weight:600;font-size:14px">Appeler Paul</p></div>
+  <div class="card sv"><h2>Sans partenaire : demande avec délai</h2>
+    <p class="small">Exécutée après 72 h de téléphone allumé. Changer l'heure n'accélère rien. Annulable à tout moment.</p>
+    <h2>Déverrouillage dans 51 h 12 min</h2><div class="bar"><div style="width:29%"></div></div>
+    <div class="btn">Annuler la demande et rester protégé</div></div>
+</section>
+
+<!-- 6. Écran bloqué -->
+<section class="phone" id="blocked">
+  <h1 class="center">Ce contenu est bloqué</h1>
+  <p class="center" style="color:var(--primary);font-weight:600">23 jours sans rechute</p>
+  <p class="center">Ce moment va passer. L'envie monte, culmine, puis redescend, souvent en moins de 15 minutes.</p>
+  <div class="circle">Inspire</div>
+  <p class="small center">Respire avec le cercle</p>
+  <div class="grow"></div>
+  <div class="btn">Appeler mon partenaire</div>
+  <div class="outline">Retour à l'accueil</div>
+</section>
+
+</body>
+</html>
