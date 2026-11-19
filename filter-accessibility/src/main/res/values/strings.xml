@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_summary">Closes adult pages in browsers and apps, and protects Rempart\'s settings.</string>
+    <string name="accessibility_description">Rempart uses this service to read the address and text of displayed pages in order to close adult content, including in private browsing and in browsers built into other apps. When you have locked Rempart, it also prevents opening the settings that would disable or uninstall it. No data is stored or sent: everything is analysed on the phone and immediately forgotten.</string>
+</resources>

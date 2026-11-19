@@ -44,6 +44,13 @@ class SettingsGuardTest {
         assertThat(guard.evaluate(s("com.android.settings", "WhatsApp", "Désinstaller", "Forcer l'arrêt"), true)).isEqualTo(GuardAction.NONE)
     }
 
+    @Test fun `guard works whatever the phone language (es, pt, de)`() {
+        assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Desinstalar", "Forzar detención"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Forçar parada"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Deinstallieren", "Stopp erzwingen"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.android.settings", "DNS privado"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+    }
+
     @Test fun `nothing is blocked when the lock is open`() {
         assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Désinstaller"), false)).isEqualTo(GuardAction.NONE)
     }

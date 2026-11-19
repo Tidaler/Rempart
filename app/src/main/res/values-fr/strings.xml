@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Général -->
+    <string name="continue_">Continuer</string>
+    <string name="back">Retour</string>
+    <string name="cancel">Annuler</string>
+    <string name="save">Enregistrer</string>
+    <string name="close">Fermer</string>
+    <string name="enabled">Activé</string>
+    <string name="disabled">Désactivé</string>
+    <string name="activate">Activer</string>
+
+    <!-- Accueil / consentement -->
+    <string name="welcome_title">Bienvenue dans Rempart</string>
+    <string name="welcome_body">Rempart t\'aide à te libérer de la pornographie en bloquant les sites pour adultes et les images trop dénudées sur ce téléphone, dans tous les navigateurs et dans les applis.\n\nRempart est gratuit, open source, sans publicité et sans achat. Il ne collecte aucune donnée : tout se passe sur ton téléphone.</string>
+    <string name="welcome_self_use">J\'installe Rempart pour moi-même, sur mon propre téléphone, de mon plein gré.</string>
+    <string name="welcome_self_use_hint">Rempart ne doit jamais être installé à l\'insu de quelqu\'un. Il n\'a ni mode caché ni surveillance à distance.</string>
+    <string name="welcome_privacy_link">Lire la politique de confidentialité</string>
+
+    <!-- Mise en place -->
+    <string name="setup_title">Mise en place de la protection</string>
+    <string name="setup_intro">Active chaque protection. Tu pourras tout verrouiller ensuite.</string>
+    <string name="setup_vpn_title">Filtre réseau</string>
+    <string name="setup_vpn_body">Un VPN local filtre les adresses des sites pour adultes et impose la recherche sécurisée (Google, Bing, YouTube, DuckDuckGo). Aucun trafic n\'est envoyé à un serveur de Rempart.</string>
+    <string name="setup_a11y_title">Surveillance des navigateurs et des applis</string>
+    <string name="setup_a11y_body">Ferme les pages pour adultes même en navigation privée et dans les navigateurs intégrés aux applis (Xender, Vidmate…), et protège les réglages de Rempart quand il est verrouillé.</string>
+    <string name="setup_admin_title">Protection contre la désinstallation</string>
+    <string name="setup_admin_body">Android refusera de désinstaller Rempart tant que tu ne l\'as pas déverrouillé.</string>
+    <string name="setup_notif_title">Notifications</string>
+    <string name="setup_notif_body">Pour te prévenir si une protection est coupée.</string>
+    <string name="setup_always_on_title">VPN permanent (recommandé)</string>
+    <string name="setup_always_on_body">Dans Réglages › Réseau › VPN › Rempart (roue dentée), active « VPN permanent » et « Bloquer les connexions sans VPN ». Ainsi, aucun site ne s\'ouvre si le filtre est arrêté.</string>
+    <string name="setup_always_on_button">Ouvrir les réglages VPN</string>
+    <string name="setup_next_partner">Choisir mon partenaire de confiance</string>
+
+    <!-- Divulgation accessibilité (obligatoire Google Play) -->
+    <string name="a11y_disclosure_title">Pourquoi Rempart a besoin de l\'accessibilité</string>
+    <string name="a11y_disclosure_body">Rempart utilise l\'API d\'accessibilité d\'Android pour :\n\n• lire l\'adresse et le texte des pages affichées dans les navigateurs et les applis, afin de fermer les contenus pour adultes ;\n• quand tu l\'as verrouillé, t\'empêcher d\'ouvrir les réglages qui le désactiveraient ou le désinstalleraient.\n\nCes informations sont analysées sur le téléphone et oubliées aussitôt. Rien n\'est enregistré, rien n\'est envoyé.\n\nSur l\'écran suivant, choisis « Rempart » puis active-le.</string>
+    <string name="a11y_disclosure_accept">J\'accepte, ouvrir les réglages</string>
+    <string name="a11y_disclosure_decline">Pas maintenant</string>
+
+    <!-- Partenaire -->
+    <string name="partner_title">Partenaire de confiance</string>
+    <string name="partner_intro">Choisis une personne de confiance (ami, conjoint, mentor, accompagnant). Elle seule connaîtra le code qui permet de déverrouiller Rempart immédiatement. Sans ce code, il faudra attendre le délai.</string>
+    <string name="partner_name">Prénom du partenaire</string>
+    <string name="partner_phone">Téléphone du partenaire (facultatif)</string>
+    <string name="partner_mode_typed">Mon partenaire tape lui-même le code (recommandé)</string>
+    <string name="partner_mode_generated">Générer un code et le lui envoyer</string>
+    <string name="partner_code">Code (tapé par le partenaire)</string>
+    <string name="partner_code_confirm">Confirmer le code</string>
+    <string name="partner_code_mismatch">Les deux codes sont différents.</string>
+    <string name="partner_hand_phone">Donne le téléphone à ton partenaire pour qu\'il tape son code sans que tu le voies.</string>
+    <string name="partner_generated_hint">Envoie ce code à ton partenaire, puis efface le message de ton côté. Rempart n\'en garde qu\'une empreinte chiffrée.</string>
+    <string name="partner_share">Envoyer à mon partenaire</string>
+    <string name="partner_share_text">Bonjour, je t\'ai choisi comme partenaire de confiance dans Rempart. Garde ce code pour toi : %1$s. Ne me le donne que si tu es sûr que c\'est une bonne idée.</string>
+    <string name="partner_skip">Continuer sans partenaire (délai uniquement)</string>
+    <string name="delay_label">Délai d\'attente pour déverrouiller sans partenaire : %1$d h</string>
+    <string name="code_too_short">Le code doit contenir au moins 8 lettres ou chiffres.</string>
+    <string name="code_too_simple">Ce code est trop simple. Mélange davantage de caractères.</string>
+    <string name="code_too_common">Ce code est trop courant.</string>
+
+    <!-- Verrouillage -->
+    <string name="lock_title">Verrouiller Rempart</string>
+    <string name="lock_body">Une fois verrouillé, tu ne pourras plus désactiver ni désinstaller Rempart, sauf avec le code de ton partenaire ou après une demande de %1$d h (annulable).\n\nAucune appli ne peut être rendue totalement impossible à retirer : une réinitialisation d\'usine efface toujours tout.</string>
+    <string name="lock_missing">Avant de verrouiller, active toutes les protections.</string>
+    <string name="lock_confirm">Je verrouille Rempart</string>
+
+    <!-- Tableau de bord -->
+    <string name="home_streak">%1$d jours sans rechute</string>
+    <string name="home_streak_best">Record : %1$d jours · prochain palier : %2$d jours</string>
+    <string name="home_relapse">J\'ai rechuté</string>
+    <string name="home_relapse_title">Une rechute n\'efface pas ton chemin</string>
+    <string name="home_relapse_body">Le compteur repart de zéro, ton record est conservé. Qu\'est-ce qui a déclenché l\'envie ? Le noter aide à mieux s\'en protéger la prochaine fois.</string>
+    <string name="home_relapse_confirm">Recommencer le compteur</string>
+    <string name="home_blocked">%1$d contenus bloqués</string>
+    <string name="home_status_title">Protections</string>
+    <string name="home_status_vpn">Filtre réseau</string>
+    <string name="home_status_a11y">Navigateurs et applis</string>
+    <string name="home_status_admin">Anti-désinstallation</string>
+    <string name="home_status_owner">Mode propriétaire (avancé)</string>
+    <string name="home_lock_open">Non verrouillé</string>
+    <string name="home_lock_locked">Verrouillé</string>
+    <string name="home_lock_releasing">Déverrouillage dans %1$s</string>
+    <string name="home_sos">J\'ai une envie, aide-moi</string>
+    <string name="home_unlock">Déverrouiller</string>
+    <string name="home_lock_now">Verrouiller</string>
+    <string name="home_resources">Ressources d\'aide</string>
+    <string name="home_journal">Journal d\'intégrité</string>
+    <string name="home_settings">Paramètres</string>
+    <string name="home_about">À propos et confidentialité</string>
+    <string name="home_fix">Réparer</string>
+    <string name="home_turn_off">Désactiver la protection</string>
+    <string name="home_uninstall_ready">Le verrou est ouvert : tu peux désactiver ou désinstaller Rempart.</string>
+
+    <!-- Déverrouillage -->
+    <string name="unlock_title">Déverrouiller Rempart</string>
+    <string name="unlock_partner">Avec le code du partenaire</string>
+    <string name="unlock_code_hint">Code du partenaire</string>
+    <string name="unlock_submit">Valider</string>
+    <string name="unlock_wrong">Code incorrect. Encore %1$d essais avant une pause.</string>
+    <string name="unlock_cooldown">Trop d\'essais. Réessaie dans %1$s.</string>
+    <string name="unlock_success">Rempart est déverrouillé.</string>
+    <string name="unlock_delay">Sans partenaire : demande avec délai</string>
+    <string name="unlock_delay_body">Ta demande sera exécutée après %1$d h de téléphone allumé. Changer l\'heure n\'accélère rien. Tu peux annuler à tout moment, et c\'est souvent la meilleure décision.</string>
+    <string name="unlock_delay_start">Lancer le délai de %1$d h</string>
+    <string name="unlock_delay_running">Déverrouillage dans %1$s</string>
+    <string name="unlock_delay_cancel">Annuler la demande et rester protégé</string>
+    <string name="unlock_no_partner">Aucun partenaire n\'a été défini.</string>
+    <string name="unlock_call_partner">Appeler %1$s</string>
+
+    <!-- Écran bloqué -->
+    <string name="blocked_title">Ce contenu est bloqué</string>
+    <string name="blocked_settings_title">Réglage protégé</string>
+    <string name="blocked_settings_body">Rempart est verrouillé. Pour le désactiver, utilise le code de ton partenaire ou lance une demande de déverrouillage dans l\'app.</string>
+    <string name="blocked_breathe">Respire avec le cercle</string>
+    <string name="blocked_inhale">Inspire</string>
+    <string name="blocked_exhale">Expire</string>
+    <string name="blocked_home">Retour à l\'accueil</string>
+    <string name="blocked_call">Appeler mon partenaire</string>
+    <string-array name="encouragements">
+        <item>Ce moment va passer. L\'envie monte, culmine, puis redescend, souvent en moins de 15 minutes.</item>
+        <item>Tu as installé Rempart pour une bonne raison. Cette raison est toujours vraie maintenant.</item>
+        <item>Inspire 4 secondes, bloque 4 secondes, expire 6 secondes. Recommence trois fois.</item>
+        <item>Lève-toi, bois un verre d\'eau, change de pièce. Le corps qui bouge calme l\'esprit.</item>
+        <item>Chaque refus renforce le cerveau que tu veux avoir. Tu viens d\'en gagner un.</item>
+        <item>Fatigué, seul, stressé, ennuyé ? Ce sont des signaux, pas des ordres. De quoi as-tu vraiment besoin ?</item>
+        <item>Appelle ou écris à quelqu\'un, même pour parler d\'autre chose. L\'isolement nourrit l\'envie.</item>
+        <item>Une rechute n\'efface pas ton chemin. Ce qui compte, c\'est ce que tu fais maintenant.</item>
+    </string-array>
+
+    <!-- Ressources -->
+    <string name="resources_title">Ressources d\'aide</string>
+    <string name="resources_intro">Tu n\'as pas à t\'en sortir seul. Parler à un professionnel de santé (médecin, psychologue, addictologue) est une vraie force.</string>
+    <string name="resources_emergency">Si tu as des idées suicidaires, appelle immédiatement les urgences de ton pays. En France : 3114 (prévention du suicide, 24 h/24, gratuit).</string>
+    <string name="resources_list">• SOS Amitié (France) : 09 72 39 40 50, écoute 24 h/24\n• Fil Santé Jeunes (France, 12-25 ans) : 0 800 235 236, gratuit et anonyme\n• Un médecin généraliste peut t\'orienter vers une consultation d\'addictologie\n• Des groupes d\'entraide existent dans de nombreux pays (en ligne et en présentiel)</string>
+    <string name="resources_tips_title">Ce qui aide souvent</string>
+    <string name="resources_tips">• Repérer ses déclencheurs (fatigue, solitude, stress, ennui, soir)\n• Ne pas garder le téléphone au lit la nuit\n• Faire du sport, sortir, voir des gens\n• Remplacer l\'habitude par une autre activité préparée à l\'avance\n• Être honnête avec son partenaire de confiance</string>
+
+    <!-- Journal -->
+    <string name="journal_title">Journal d\'intégrité</string>
+    <string name="journal_intro">Ce journal montre les événements de protection (jamais les sites visités). Ton partenaire peut le consulter avec toi.</string>
+    <string name="journal_empty">Aucun événement pour l\'instant.</string>
+    <string name="ev_LOCK_ENGAGED">Verrou activé</string>
+    <string name="ev_RELEASE_REQUESTED">Demande de déverrouillage (délai lancé)</string>
+    <string name="ev_RELEASE_CANCELLED">Demande de déverrouillage annulée</string>
+    <string name="ev_RELEASE_COMPLETED">Délai écoulé : protection déverrouillée</string>
+    <string name="ev_PARTNER_UNLOCK">Déverrouillé avec le code du partenaire</string>
+    <string name="ev_PARTNER_CODE_FAILED">Code partenaire erroné</string>
+    <string name="ev_VPN_REVOKED">Filtre réseau coupé (autre VPN ou désactivation)</string>
+    <string name="ev_VPN_STARTED">Filtre réseau démarré</string>
+    <string name="ev_ACCESSIBILITY_LOST">Surveillance des applis interrompue</string>
+    <string name="ev_ADMIN_DISABLE_REQUESTED">Tentative de retrait de l\'administrateur</string>
+    <string name="ev_PROTECTED_SCREEN_BLOCKED">Écran de réglage protégé refusé</string>
+    <string name="ev_CLOCK_CHANGED">Heure du téléphone modifiée</string>
+    <string name="ev_PROTECTION_GAP">Protection interrompue (téléphone éteint, mode sans échec ou arrêt forcé)</string>
+
+    <!-- Paramètres -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_locked_note">Rempart est verrouillé : les réglages ne peuvent pas être assouplis.</string>
+    <string name="settings_safesearch">Imposer la recherche sécurisée</string>
+    <string name="settings_youtube">YouTube en mode restreint</string>
+    <string name="settings_upstream">Résolveur DNS filtrant</string>
+    <string name="settings_lists">Listes : %1$d domaines</string>
+    <string name="settings_lists_updated">Mise à jour : %1$s</string>
+    <string name="settings_lists_never">Liste fournie avec l\'app</string>
+    <string name="settings_update_now">Mettre à jour les listes maintenant</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_language_body">Rempart suit la langue du téléphone. Sur Android 13 et plus, tu peux en choisir une autre pour Rempart seul.</string>
+    <string name="settings_language_button">Choisir la langue de Rempart</string>
+    <string name="settings_device_owner">Mode propriétaire de l\'appareil (avancé)</string>
+    <string name="settings_device_owner_body">Le plus solide : bloque aussi le mode sans échec, l\'ajout d\'utilisateurs et le changement de VPN. Il s\'active avec un ordinateur (ADB) sur un téléphone sans compte. Voir docs/DEVICE_OWNER.md.</string>
+
+    <!-- À propos -->
+    <string name="about_title">À propos et confidentialité</string>
+    <string name="about_body">Rempart est un logiciel libre (licence GPL-3.0), gratuit, sans publicité ni achat intégré.\n\nConfidentialité : Rempart ne collecte, ne stocke et ne transmet aucune donnée personnelle. Les pages affichées sont analysées sur le téléphone et oubliées aussitôt. Seuls des compteurs (nombre de contenus bloqués, jours sans rechute) et le journal d\'intégrité sont gardés, sur le téléphone uniquement.\n\nRéseau : les requêtes DNS autorisées sont transmises au résolveur filtrant choisi (par défaut Cloudflare for Families). Les listes de blocage sont téléchargées depuis GitHub une fois par semaine en Wi-Fi.\n\nListes : HaGeZi (GPL-3.0), StevenBlack hosts (MIT).</string>
+    <string name="about_source">Code source</string>
+    <string name="about_version">Version %1$s</string>
+</resources>

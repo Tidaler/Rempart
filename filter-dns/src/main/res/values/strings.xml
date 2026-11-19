@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vpn_channel_protection">Active protection</string>
+    <string name="vpn_channel_alerts">Protection alerts</string>
+    <string name="vpn_notif_title">Rempart is protecting you</string>
+    <string name="vpn_notif_text">Network filter active on this phone, no remote server.</string>
+    <string name="vpn_revoked_title">Rempart\'s network filter is off</string>
+    <string name="vpn_revoked_text">Tap here to turn it back on.</string>
+</resources>

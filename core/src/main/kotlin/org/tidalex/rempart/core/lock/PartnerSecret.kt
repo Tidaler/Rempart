@@ -30,12 +30,13 @@ data class PartnerSecret(val saltB64: String, val hashB64: String, val iteration
         /** Majuscules, sans espaces ni tirets : « abcd-efgh » == « ABCDEFGH ». */
         fun normalize(code: String): String = code.uppercase().filter { it.isLetterOrDigit() }
 
-        fun validate(code: String): String? {
+        /** Problème du code proposé, ou null s'il est acceptable (le texte est traduit par l'app). */
+        fun validate(code: String): CodeProblem? {
             val n = normalize(code)
             return when {
-                n.length < MIN_LENGTH -> "Le code doit contenir au moins $MIN_LENGTH lettres ou chiffres."
-                n.toSet().size < 4 -> "Ce code est trop simple. Mélange davantage de caractères."
-                n in WEAK -> "Ce code est trop courant."
+                n.length < MIN_LENGTH -> CodeProblem.TOO_SHORT
+                n.toSet().size < 4 -> CodeProblem.TOO_SIMPLE
+                n in WEAK -> CodeProblem.TOO_COMMON
                 else -> null
             }
         }
@@ -43,7 +44,7 @@ data class PartnerSecret(val saltB64: String, val hashB64: String, val iteration
         private val WEAK = setOf("12345678", "123456789", "1234567890", "00000000", "11111111", "PASSWORD", "AZERTYUI", "QWERTYUI", "87654321", "12341234")
 
         fun create(code: String, iterations: Int = DEFAULT_ITERATIONS, random: SecureRandom = SecureRandom()): PartnerSecret {
-            require(validate(code) == null) { validate(code)!! }
+            require(validate(code) == null) { "code partenaire refusé : ${validate(code)}" }
             val salt = ByteArray(16).also(random::nextBytes)
             val hash = derive(normalize(code), salt, iterations)
             val enc = Base64.getEncoder()
@@ -71,3 +72,5 @@ data class PartnerSecret(val saltB64: String, val hashB64: String, val iteration
         }
     }
 }
+
+enum class CodeProblem { TOO_SHORT, TOO_SIMPLE, TOO_COMMON }

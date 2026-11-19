@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_description">Empêche la désinstallation de Rempart tant que tu l\'as verrouillé. Tu peux le retirer avec le code de ton partenaire ou après le délai d\'attente.</string>
+    <string name="admin_disable_warning">Rempart est verrouillé. Pour le retirer, utilise le code de ton partenaire de confiance ou lance une demande de déverrouillage dans l\'app (délai d\'attente).</string>
+</resources>
