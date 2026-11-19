@@ -1,7 +1,6 @@
 package org.tidalex.rempart
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,7 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringArrayResource
+import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -81,7 +83,7 @@ fun BlockedScreen(reason: BlockReason?, onHome: () -> Unit) {
     val days = streak.currentDays(LocalDate.now())
     val messages = stringArrayResource(R.array.encouragements)
     val message = messages[((days + System.currentTimeMillis() / 60_000) % messages.size).toInt()]
-    val partner = LockRepository.get(context).state.value
+    val partner by LockRepository.get(context).state.collectAsStateWithLifecycle()
     val settings = reason == BlockReason.PROTECTED_SETTINGS
 
     val breath = rememberInfiniteTransition(label = "breath")
@@ -96,7 +98,7 @@ fun BlockedScreen(reason: BlockReason?, onHome: () -> Unit) {
             stringResource(if (settings) R.string.blocked_settings_title else R.string.blocked_title),
             style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center, modifier = Modifier.testTag("blockedTitle"),
         )
-        Text(stringResource(R.string.home_streak, days.toInt()), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+        Text(pluralStringResource(R.plurals.home_streak, days.toInt(), days.toInt()), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
         Text(if (settings) stringResource(R.string.blocked_settings_body) else message, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
 
         Box(Modifier.size(200.dp), contentAlignment = Alignment.Center) {
@@ -106,7 +108,7 @@ fun BlockedScreen(reason: BlockReason?, onHome: () -> Unit) {
         Text(stringResource(R.string.blocked_breathe), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
         partner.partnerPhone?.let { phone ->
-            Button(onClick = { context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))) }, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = { context.startActivity(Intent(Intent.ACTION_DIAL, "tel:$phone".toUri())) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.blocked_call))
             }
         }

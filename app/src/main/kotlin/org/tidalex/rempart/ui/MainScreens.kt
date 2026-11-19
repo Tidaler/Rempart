@@ -1,7 +1,6 @@
 package org.tidalex.rempart.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.net.toUri
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -67,9 +68,9 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
 
     ScreenScaffold(stringResource(R.string.app_name)) {
         InfoCard(container = MaterialTheme.colorScheme.primaryContainer) {
-            Text(stringResource(R.string.home_streak, streak.currentDays(today).toInt()), style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("streak"))
+            Text(pluralStringResource(R.plurals.home_streak, streak.currentDays(today).toInt(), streak.currentDays(today).toInt()), style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("streak"))
             Text(stringResource(R.string.home_streak_best, streak.best(today).toInt(), streak.nextMilestone(today).toInt()), style = MaterialTheme.typography.bodyMedium)
-            Text(stringResource(R.string.home_blocked, Stats.total(context).toInt()), style = MaterialTheme.typography.bodyMedium)
+            Text(Stats.total(context).toInt().let { pluralStringResource(R.plurals.home_blocked, it, it) }, style = MaterialTheme.typography.bodyMedium)
             TextButton(onClick = { confirmRelapse = true }) { Text(stringResource(R.string.home_relapse)) }
         }
 
@@ -147,14 +148,14 @@ fun UnlockScreen(onBack: () -> Unit) {
                 Button(modifier = Modifier.testTag("unlockSubmit"), onClick = {
                     message = when (val r = repo.unlockWithPartnerCode(code)) {
                         UnlockResult.Success -> context.getString(R.string.unlock_success)
-                        is UnlockResult.WrongCode -> context.getString(R.string.unlock_wrong, r.attemptsBeforeCooldown)
+                        is UnlockResult.WrongCode -> context.resources.getQuantityString(R.plurals.unlock_wrong, r.attemptsBeforeCooldown, r.attemptsBeforeCooldown)
                         is UnlockResult.CoolingDown -> context.getString(R.string.unlock_cooldown, formatDuration(r.remainingMs))
                         else -> null
                     }
                     code = ""
                 }) { Text(stringResource(R.string.unlock_submit)) }
                 lock.partnerPhone?.let { phone ->
-                    TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))) }) {
+                    TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_DIAL, "tel:$phone".toUri())) }) {
                         Text(stringResource(R.string.unlock_call_partner, lock.partnerName ?: phone))
                     }
                 }
@@ -252,7 +253,7 @@ fun SettingsScreen(onBack: () -> Unit) {
             }
         }
         InfoCard {
-            Text(stringResource(R.string.settings_lists, settings.listSize.takeIf { it > 0 } ?: 148_000), style = MaterialTheme.typography.titleMedium)
+            Text((settings.listSize.takeIf { it > 0 } ?: 148_000).let { pluralStringResource(R.plurals.settings_lists, it, it) }, style = MaterialTheme.typography.titleMedium)
             Text(if (settings.listUpdatedAt == 0L) stringResource(R.string.settings_lists_never)
                 else stringResource(R.string.settings_lists_updated, DateFormat.getMediumDateFormat(context).format(Date(settings.listUpdatedAt))))
             OutlinedButton(onClick = { WorkManager.getInstance(context).enqueue(OneTimeWorkRequestBuilder<BlocklistUpdateWorker>().build()) }) {
@@ -287,7 +288,7 @@ fun AboutScreen(onBack: () -> Unit) {
     ScreenScaffold(stringResource(R.string.about_title), onBack) {
         Text(stringResource(R.string.about_body), style = MaterialTheme.typography.bodyLarge)
         Column {
-            TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(SOURCE_URL))) }) { Text(stringResource(R.string.about_source)) }
+            TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, SOURCE_URL.toUri())) }) { Text(stringResource(R.string.about_source)) }
             Text(stringResource(R.string.about_version, BuildConfig.VERSION_NAME), style = MaterialTheme.typography.bodyMedium)
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Rempart</string>
 
     <!-- General -->
@@ -7,7 +7,6 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
-    <string name="close">Close</string>
     <string name="enabled">On</string>
     <string name="disabled">Off</string>
     <string name="activate">Turn on</string>
@@ -68,13 +67,11 @@
     <string name="lock_confirm">Lock Rempart</string>
 
     <!-- Dashboard -->
-    <string name="home_streak">%1$d days without relapse</string>
-    <string name="home_streak_best">Best: %1$d days · next milestone: %2$d days</string>
+    <string name="home_streak_best" tools:ignore="PluralsCandidate">Best: %1$d days · next milestone: %2$d days</string>
     <string name="home_relapse">I relapsed</string>
     <string name="home_relapse_title">A relapse does not erase your progress</string>
     <string name="home_relapse_body">The counter restarts from zero, your record is kept. What triggered the urge? Noting it helps you protect yourself better next time.</string>
     <string name="home_relapse_confirm">Restart the counter</string>
-    <string name="home_blocked">%1$d items blocked</string>
     <string name="home_status_title">Protections</string>
     <string name="home_status_vpn">Network filter</string>
     <string name="home_status_a11y">Browsers and apps</string>
@@ -99,7 +96,6 @@
     <string name="unlock_partner">With your partner\'s code</string>
     <string name="unlock_code_hint">Partner\'s code</string>
     <string name="unlock_submit">Confirm</string>
-    <string name="unlock_wrong">Wrong code. %1$d attempts left before a pause.</string>
     <string name="unlock_cooldown">Too many attempts. Try again in %1$s.</string>
     <string name="unlock_success">Rempart is unlocked.</string>
     <string name="unlock_delay">Without a partner: request with a delay</string>
@@ -134,7 +130,7 @@
     <string name="resources_title">Help resources</string>
     <string name="resources_intro">You do not have to get through this alone. Talking to a health professional (doctor, psychologist, addiction specialist) is a real strength.</string>
     <string name="resources_emergency">If you have suicidal thoughts, call your country\'s emergency number right away. In France: 3114 (suicide prevention, 24/7, free).</string>
-    <string name="resources_list">• SOS Amitié (France): 09 72 39 40 50, listening 24/7\n• Fil Santé Jeunes (France, ages 12-25): 0 800 235 236, free and anonymous\n• A general practitioner can refer you to an addiction clinic\n• Peer support groups exist in many countries (online and in person)</string>
+    <string name="resources_list">• SOS Amitié (France): 09 72 39 40 50, listening 24/7\n• Fil Santé Jeunes (France, ages 12–25): 0 800 235 236, free and anonymous\n• A general practitioner can refer you to an addiction clinic\n• Peer support groups exist in many countries (online and in person)</string>
     <string name="resources_tips_title">What often helps</string>
     <string name="resources_tips">• Spot your triggers (tiredness, loneliness, stress, boredom, late evenings)\n• Do not keep your phone in bed at night\n• Exercise, go out, see people\n• Replace the habit with another activity prepared in advance\n• Be honest with your trusted partner</string>
 
@@ -162,7 +158,6 @@
     <string name="settings_safesearch">Enforce safe search</string>
     <string name="settings_youtube">YouTube restricted mode</string>
     <string name="settings_upstream">Filtering DNS resolver</string>
-    <string name="settings_lists">Lists: %1$d domains</string>
     <string name="settings_lists_updated">Updated: %1$s</string>
     <string name="settings_lists_never">List shipped with the app</string>
     <string name="settings_update_now">Update lists now</string>
@@ -177,4 +172,24 @@
     <string name="about_body">Rempart is free software (GPL-3.0 licence), free of charge, with no ads and no in-app purchases.\n\nPrivacy: Rempart does not collect, store or transmit any personal data. Displayed pages are analysed on the phone and immediately forgotten. Only counters (items blocked, days without relapse) and the integrity log are kept, on the phone only.\n\nNetwork: allowed DNS requests are forwarded to the chosen filtering resolver (Cloudflare for Families by default). Blocklists are downloaded from GitHub once a week over Wi-Fi.\n\nLists: HaGeZi (GPL-3.0), StevenBlack hosts (MIT).</string>
     <string name="about_source">Source code</string>
     <string name="about_version">Version %1$s</string>
+
+    <plurals name="home_streak">
+        <item quantity="one">%1$d day without relapse</item>
+        <item quantity="other">%1$d days without relapse</item>
+    </plurals>
+
+    <plurals name="home_blocked">
+        <item quantity="one">%1$d item blocked</item>
+        <item quantity="other">%1$d items blocked</item>
+    </plurals>
+
+    <plurals name="unlock_wrong">
+        <item quantity="one">Wrong code. %1$d attempt left before a pause.</item>
+        <item quantity="other">Wrong code. %1$d attempts left before a pause.</item>
+    </plurals>
+
+    <plurals name="settings_lists">
+        <item quantity="one">Lists: %1$d domain</item>
+        <item quantity="other">Lists: %1$d domains</item>
+    </plurals>
 </resources>

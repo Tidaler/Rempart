@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlin.math.roundToInt
 import org.tidalex.rempart.Protection
 import org.tidalex.rempart.R
@@ -215,7 +216,8 @@ fun LockScreen(onDone: () -> Unit, onBack: () -> Unit, onFix: () -> Unit) {
     val status = Protection.status(context)
     val repo = LockRepository.get(context)
     ScreenScaffold(stringResource(R.string.lock_title), onBack) {
-        Text(stringResource(R.string.lock_body, repo.state.value.delayHours), style = MaterialTheme.typography.bodyLarge)
+        val lockState by repo.state.collectAsStateWithLifecycle()
+        Text(stringResource(R.string.lock_body, lockState.delayHours), style = MaterialTheme.typography.bodyLarge)
         InfoCard {
             StatusLine(stringResource(R.string.home_status_vpn), status.vpnRunning)
             StatusLine(stringResource(R.string.home_status_a11y), status.accessibility)

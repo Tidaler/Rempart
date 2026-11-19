@@ -147,10 +147,17 @@ class RempartVpnService : VpnService() {
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .build()
-        if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
-        } else {
-            startForeground(NOTIF_ID, n)
+        // Le type « systemExempted » n'est accordé qu'aux applis VPN configurées / administrateurs.
+        // Juste après le premier consentement il peut être refusé : le service VPN, lié par
+        // le système, reste alors actif sans être « de premier plan ».
+        try {
+            if (Build.VERSION.SDK_INT >= 34) {
+                startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
+            } else {
+                startForeground(NOTIF_ID, n)
+            }
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "service de premier plan refusé, poursuite sans", e)
         }
     }
 
@@ -199,7 +206,12 @@ class RempartVpnService : VpnService() {
 
         fun start(context: Context) {
             FilterSettings(context).wanted = true
-            ContextCompat.startForegroundService(context, Intent(context, RempartVpnService::class.java).setAction(ACTION_START))
+            val intent = Intent(context, RempartVpnService::class.java).setAction(ACTION_START)
+            try {
+                context.startService(intent) // appli au premier plan : démarrage simple
+            } catch (e: IllegalStateException) {
+                ContextCompat.startForegroundService(context, intent) // démarrage du téléphone
+            }
         }
 
         /** Arrêt volontaire : l'app ne l'autorise que si le verrou est ouvert. */

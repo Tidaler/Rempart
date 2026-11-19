@@ -19,7 +19,7 @@ class TranslationsTest {
         if (!f.exists()) return emptyMap()
         val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f)
         val out = mutableMapOf<String, String>()
-        for (tag in listOf("string", "string-array")) {
+        for (tag in listOf("string", "string-array", "plurals")) {
             val nodes = doc.getElementsByTagName(tag)
             for (i in 0 until nodes.length) {
                 val e = nodes.item(i) as org.w3c.dom.Element
