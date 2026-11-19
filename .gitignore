@@ -1,0 +1,25 @@
+# Gradle / Android
+.gradle/
+build/
+/local.properties
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+/app/release/
+# IDE
+.idea/
+*.iml
+.kotlin/
+# Signature : ne JAMAIS committer les clés
+*.jks
+*.keystore
+keystore.properties
+# OS
+.DS_Store
+Thumbs.db
+# Téléchargements temporaires des listes
+/tools/.cache/
