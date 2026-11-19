@@ -1,7 +1,7 @@
 package org.tidalex.rempart.filter.image
 
 /**
- * Détection d'images trop dénudées sur l'appareil — module OPTIONNEL, en préparation.
+ * Détection d'images trop dénudées sur l'appareil. Module optionnel, en préparation.
  *
  * Principe prévu : le service d'accessibilité (Android 11+, `takeScreenshot`)
  * fournit une capture réduite de l'écran quand un navigateur ou une appli à

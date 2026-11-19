@@ -37,7 +37,7 @@ sealed interface UnlockResult {
 }
 
 /**
- * Machine à états du verrou — logique pure, testée hors Android.
+ * Machine à états du verrou, en logique pure, testée hors Android.
  * Chaque fonction renvoie le nouvel état ; la persistance est faite par le module :lock.
  */
 class LockEngine(private val clock: TrustedClock) {

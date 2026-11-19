@@ -53,6 +53,17 @@ class TranslationsTest {
         }
     }
 
+    /** Règle d'écriture du projet : pas de tiret long ni moyen comme ponctuation. */
+    @Test fun `no long dashes in any displayed text`() {
+        for (m in modules) {
+            for (dir in listOf("values") + languages.map { "values-$it" }) {
+                keys(File(root, "$m/src/main/res/$dir/strings.xml")).forEach { (k, v) ->
+                    assertWithMessage("$m/$dir/$k").that(v).doesNotContainMatch("[—–]")
+                }
+            }
+        }
+    }
+
     @Test fun `every integrity event has a label`() {
         val base = keys(File(root, "app/src/main/res/values/strings.xml"))
         org.tidalex.rempart.core.integrity.IntegrityEvent.entries.forEach { assertThat(base).containsKey("ev_${it.name}") }

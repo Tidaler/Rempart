@@ -40,7 +40,7 @@ class RempartAccessibilityService : AccessibilityService() {
         if (pkg == packageName) return
         val now = SystemClock.uptimeMillis()
         // Limitation de fréquence : un même paquet est analysé au plus toutes les 350 ms
-        // pour les changements de contenu (défilement, frappe) — économie de batterie.
+        // pour les changements de contenu (défilement, frappe), pour économiser la batterie.
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             if (now - (lastCheck[pkg] ?: 0L) < THROTTLE_MS) return
         }

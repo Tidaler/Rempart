@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-// Module :filter-image — classification d images sur l appareil (optionnelle, en préparation).
+// Module :filter-image : classification d images sur l appareil (optionnelle, en préparation).
 plugins {
     alias(libs.plugins.kotlin.jvm)
 }

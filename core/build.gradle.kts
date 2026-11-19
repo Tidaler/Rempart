@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-// Module :core — logique métier pure Kotlin, sans dépendance Android.
+// Module :core : logique métier pure Kotlin, sans dépendance Android.
 // Conçu pour devenir plus tard le `commonMain` d'un module Kotlin Multiplatform
 // partagé avec l'app iPhone (voir docs/PLAN_IPHONE.md).
 plugins {
