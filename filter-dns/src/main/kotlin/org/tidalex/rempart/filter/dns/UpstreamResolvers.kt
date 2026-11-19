@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException
  */
 enum class UpstreamChoice(val label: String, val servers: List<String>) {
     CLOUDFLARE_FAMILY("Cloudflare for Families (1.1.1.3)", listOf("1.1.1.3", "1.0.0.3")),
-    ADGUARD_FAMILY("AdGuard DNS Famille", listOf("94.140.14.15", "94.140.15.16")),
+    ADGUARD_FAMILY("AdGuard DNS Family", listOf("94.140.14.15", "94.140.15.16")),
     CLEANBROWSING_ADULT("CleanBrowsing Adult", listOf("185.228.168.10", "185.228.169.11")),
     ;
 

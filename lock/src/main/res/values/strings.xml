@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_description">Prevents Rempart from being uninstalled while you have locked it. You can remove it with your partner\'s code or after the waiting period.</string>
+    <string name="admin_disable_warning">Rempart is locked. To remove it, use your trusted partner\'s code or start an unlock request in the app (waiting period).</string>
+</resources>

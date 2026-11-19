@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_summary">Ferme les pages pour adultes dans les navigateurs et les applis, et protège les réglages de Rempart.</string>
+    <string name="accessibility_description">Rempart utilise ce service pour lire l\'adresse et le texte des pages affichées afin de fermer les contenus pour adultes, y compris en navigation privée et dans les navigateurs intégrés aux applis. Quand tu as verrouillé Rempart, il empêche aussi d\'ouvrir les réglages qui permettraient de le désactiver ou de le désinstaller. Aucune donnée n\'est enregistrée ni envoyée : tout est analysé sur le téléphone et oublié aussitôt.</string>
+</resources>

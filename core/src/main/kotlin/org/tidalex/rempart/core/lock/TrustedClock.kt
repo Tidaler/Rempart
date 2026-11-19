@@ -1,7 +1,7 @@
 package org.tidalex.rempart.core.lock
 
 /**
- * Horloge de confiance. Sur Android : `SystemClock.elapsedRealtime()` — le temps
+ * Horloge de confiance. Sur Android : `SystemClock.elapsedRealtime()`, le temps
  * écoulé depuis le démarrage, que l'utilisateur ne peut PAS modifier (contrairement
  * à l'heure système). C'est la base du délai de 72 h.
  */

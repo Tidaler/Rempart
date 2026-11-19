@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vpn_channel_protection">Protection active</string>
+    <string name="vpn_channel_alerts">Alertes de protection</string>
+    <string name="vpn_notif_title">Rempart te protège</string>
+    <string name="vpn_notif_text">Filtre réseau actif sur ce téléphone, sans serveur distant.</string>
+    <string name="vpn_revoked_title">Le filtre réseau de Rempart est coupé</string>
+    <string name="vpn_revoked_text">Touche ici pour le réactiver.</string>
+</resources>

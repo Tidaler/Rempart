@@ -4,20 +4,21 @@ package org.tidalex.rempart.core.integrity
  * Journal d'intégrité, visible par l'utilisateur et son partenaire dans l'app.
  * Il ne contient AUCUN site visité : seulement des événements de protection.
  */
-enum class IntegrityEvent(val label: String) {
-    LOCK_ENGAGED("Verrou activé"),
-    RELEASE_REQUESTED("Demande de déverrouillage (délai lancé)"),
-    RELEASE_CANCELLED("Demande de déverrouillage annulée"),
-    RELEASE_COMPLETED("Délai écoulé : protection déverrouillée"),
-    PARTNER_UNLOCK("Déverrouillé avec le code du partenaire"),
-    PARTNER_CODE_FAILED("Code partenaire erroné"),
-    VPN_REVOKED("Filtre réseau coupé (autre VPN ou désactivation)"),
-    VPN_STARTED("Filtre réseau démarré"),
-    ACCESSIBILITY_LOST("Surveillance des applis interrompue"),
-    ADMIN_DISABLE_REQUESTED("Tentative de retrait de l'administrateur"),
-    PROTECTED_SCREEN_BLOCKED("Écran de réglage protégé refusé"),
-    CLOCK_CHANGED("Heure du téléphone modifiée"),
-    PROTECTION_GAP("Protection interrompue (téléphone éteint, mode sans échec ou arrêt forcé)"),
+/** Les libellés sont traduits par l'app (ressources Android), selon la langue du téléphone. */
+enum class IntegrityEvent {
+    LOCK_ENGAGED,
+    RELEASE_REQUESTED,
+    RELEASE_CANCELLED,
+    RELEASE_COMPLETED,
+    PARTNER_UNLOCK,
+    PARTNER_CODE_FAILED,
+    VPN_REVOKED,
+    VPN_STARTED,
+    ACCESSIBILITY_LOST,
+    ADMIN_DISABLE_REQUESTED,
+    PROTECTED_SCREEN_BLOCKED,
+    CLOCK_CHANGED,
+    PROTECTION_GAP,
 }
 
 data class IntegrityEntry(val wallTimeMs: Long, val event: IntegrityEvent)

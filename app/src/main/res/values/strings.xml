@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">Rempart</string>
+
+    <!-- General -->
+    <string name="continue_">Continue</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="enabled">On</string>
+    <string name="disabled">Off</string>
+    <string name="activate">Turn on</string>
+
+    <!-- Welcome / consent -->
+    <string name="welcome_title">Welcome to Rempart</string>
+    <string name="welcome_body">Rempart helps you quit porn. It blocks adult websites and overly revealing images, in every browser and inside apps.\n\nIt is free and open source. No ads, no purchases. Nothing leaves your phone.</string>
+    <string name="welcome_self_use">I am installing Rempart for myself, on my own phone, of my own free will.</string>
+    <string name="welcome_self_use_hint">Nobody should install it on someone else\'s phone. Rempart has no hidden mode and can\'t be used to watch anyone.</string>
+    <string name="welcome_privacy_link">Read the privacy policy</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Set up your protection</string>
+    <string name="setup_intro">Turn on each protection. You can lock everything afterwards.</string>
+    <string name="setup_vpn_title">Network filter</string>
+    <string name="setup_vpn_body">Blocks adult websites and puts Google, Bing, YouTube and DuckDuckGo in strict mode. Everything happens on the phone, nothing is sent to Rempart.</string>
+    <string name="setup_a11y_title">Browsers and apps</string>
+    <string name="setup_a11y_body">Closes adult pages, even in private browsing or in browsers hidden inside apps (Xender, Vidmate…). Once locked, it also keeps Rempart\'s settings closed.</string>
+    <string name="setup_admin_title">Uninstall protection</string>
+    <string name="setup_admin_body">Android will refuse to uninstall Rempart while it is locked.</string>
+    <string name="setup_notif_title">Notifications</string>
+    <string name="setup_notif_body">To warn you if a protection is switched off.</string>
+    <string name="setup_always_on_title">Always-on VPN (recommended)</string>
+    <string name="setup_always_on_body">Go to Settings › Network › VPN, tap the gear next to Rempart, then turn on "Always-on VPN" and "Block connections without VPN". That way no website opens if the filter stops.</string>
+    <string name="setup_always_on_button">Open VPN settings</string>
+    <string name="setup_next_partner">Choose my trusted partner</string>
+
+    <!-- Accessibility disclosure (required by Google Play) -->
+    <string name="a11y_disclosure_title">Why Rempart needs accessibility</string>
+    <string name="a11y_disclosure_body">Rempart uses Android accessibility for two things:\n\n• reading the address and text of open pages, to close the adult ones;\n• once locked, stopping you from opening the settings that would turn it off.\n\nEverything is checked on the phone and then forgotten. Nothing is kept, nothing is sent.\n\nOn the next screen, tap "Rempart" and turn it on.</string>
+    <string name="a11y_disclosure_accept">I agree, open settings</string>
+    <string name="a11y_disclosure_decline">Not now</string>
+
+    <!-- Partner -->
+    <string name="partner_title">Trusted partner</string>
+    <string name="partner_intro">Pick someone you trust: a friend, your partner, a mentor. Only they will have the code that unlocks Rempart right away. Without it, you\'ll have to wait.</string>
+    <string name="partner_name">Partner\'s first name</string>
+    <string name="partner_phone">Partner\'s phone (optional)</string>
+    <string name="partner_mode_typed">My partner types the code themselves (recommended)</string>
+    <string name="partner_mode_generated">Generate a code and send it to them</string>
+    <string name="partner_code">Code (typed by your partner)</string>
+    <string name="partner_code_confirm">Confirm the code</string>
+    <string name="partner_code_mismatch">The two codes are different.</string>
+    <string name="partner_hand_phone">Hand the phone to your partner. They type their code without you seeing it.</string>
+    <string name="partner_generated_hint">Send this code to your partner, then delete the message on your side. Rempart only keeps an encrypted fingerprint, not the code.</string>
+    <string name="partner_share">Send to my partner</string>
+    <string name="partner_share_text">Hi, I picked you as my trusted partner in Rempart. Keep this code to yourself: %1$s. Only give it to me if you\'re sure it\'s a good idea.</string>
+    <string name="partner_skip">Continue without a partner (delay only)</string>
+    <string name="delay_label">Wait to unlock without a partner: %1$d h</string>
+    <string name="code_too_short">The code must contain at least 8 letters or digits.</string>
+    <string name="code_too_simple">This code is too simple. Mix in more letters and digits.</string>
+    <string name="code_too_common">This code is too common.</string>
+
+    <!-- Lock -->
+    <string name="lock_title">Lock Rempart</string>
+    <string name="lock_body">Once locked, you won\'t be able to turn off or uninstall Rempart. Two ways out remain: your partner\'s code, or a %1$d h request you can cancel.\n\nTo be honest: a factory reset always wipes everything. No app can stop that.</string>
+    <string name="lock_missing">Before locking, turn on every protection.</string>
+    <string name="lock_confirm">Lock Rempart</string>
+
+    <!-- Dashboard -->
+    <string name="home_streak_best" tools:ignore="PluralsCandidate">Best: %1$d days · next milestone: %2$d days</string>
+    <string name="home_relapse">I relapsed</string>
+    <string name="home_relapse_title">A relapse does not erase your progress</string>
+    <string name="home_relapse_body">The counter goes back to zero, but your record stays. What set off the urge? Writing it down will help next time.</string>
+    <string name="home_relapse_confirm">Restart the counter</string>
+    <string name="home_status_title">Protections</string>
+    <string name="home_status_vpn">Network filter</string>
+    <string name="home_status_a11y">Browsers and apps</string>
+    <string name="home_status_admin">Uninstall protection</string>
+    <string name="home_status_owner">Device owner mode (advanced)</string>
+    <string name="home_lock_open">Not locked</string>
+    <string name="home_lock_locked">Locked</string>
+    <string name="home_lock_releasing">Unlocks in %1$s</string>
+    <string name="home_sos">I have an urge, help me</string>
+    <string name="home_unlock">Unlock</string>
+    <string name="home_lock_now">Lock</string>
+    <string name="home_resources">Help resources</string>
+    <string name="home_journal">Integrity log</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_about">About and privacy</string>
+    <string name="home_fix">Fix</string>
+    <string name="home_turn_off">Turn protection off</string>
+    <string name="home_uninstall_ready">The lock is open: you can disable or uninstall Rempart.</string>
+
+    <!-- Unlock -->
+    <string name="unlock_title">Unlock Rempart</string>
+    <string name="unlock_partner">With your partner\'s code</string>
+    <string name="unlock_code_hint">Partner\'s code</string>
+    <string name="unlock_submit">Confirm</string>
+    <string name="unlock_cooldown">Too many attempts. Try again in %1$s.</string>
+    <string name="unlock_success">Rempart is unlocked.</string>
+    <string name="unlock_delay">Without a partner: request with a delay</string>
+    <string name="unlock_delay_body">The request goes through after %1$d h with the phone on. Changing the clock won\'t speed it up. You can cancel any time, and that\'s often the right call.</string>
+    <string name="unlock_delay_start">Start the %1$d h delay</string>
+    <string name="unlock_delay_running">Unlocks in %1$s</string>
+    <string name="unlock_delay_cancel">Cancel the request and stay protected</string>
+    <string name="unlock_no_partner">You haven\'t picked a partner.</string>
+    <string name="unlock_call_partner">Call %1$s</string>
+
+    <!-- Blocked screen -->
+    <string name="blocked_title">This content is blocked</string>
+    <string name="blocked_settings_title">Protected setting</string>
+    <string name="blocked_settings_body">Rempart is locked. To turn it off, you need your partner\'s code or an unlock request in the app.</string>
+    <string name="blocked_breathe">Breathe with the circle</string>
+    <string name="blocked_inhale">Breathe in</string>
+    <string name="blocked_exhale">Breathe out</string>
+    <string name="blocked_home">Back to home screen</string>
+    <string name="blocked_call">Call my partner</string>
+    <string-array name="encouragements">
+        <item>This moment will pass. An urge rises, peaks, then fades, often in less than 15 minutes.</item>
+        <item>You installed Rempart for a good reason. That reason is still true right now.</item>
+        <item>Breathe in for 4 seconds, hold for 4, breathe out for 6. Repeat three times.</item>
+        <item>Stand up, drink a glass of water, change rooms. A moving body calms the mind.</item>
+        <item>Every refusal strengthens the brain you want to have. You just won one.</item>
+        <item>Tired, lonely, stressed, bored? These are signals, not orders. What do you really need?</item>
+        <item>Call or text someone, even about something else. Isolation feeds the urge.</item>
+        <item>A relapse does not erase your journey. What matters is what you do now.</item>
+    </string-array>
+
+    <!-- Resources -->
+    <string name="resources_title">Help resources</string>
+    <string name="resources_intro">You don\'t have to do this alone. A doctor, a psychologist or an addiction specialist can really help.</string>
+    <string name="resources_emergency">If you are thinking about suicide, call your country\'s emergency number now. In France: 3114, free, day and night.</string>
+    <string name="resources_list">• SOS Amitié (France): 09 72 39 40 50, listening 24/7\n• Fil Santé Jeunes (France, ages 12 to 25): 0 800 235 236, free and anonymous\n• A general practitioner can refer you to an addiction clinic\n• Peer support groups exist in many countries (online and in person)</string>
+    <string name="resources_tips_title">What often helps</string>
+    <string name="resources_tips">• Spot your triggers (tiredness, loneliness, stress, boredom, late evenings)\n• Do not keep your phone in bed at night\n• Exercise, go out, see people\n• Replace the habit with another activity prepared in advance\n• Be honest with your trusted partner</string>
+
+    <!-- Log -->
+    <string name="journal_title">Integrity log</string>
+    <string name="journal_intro">This shows protection events, never the sites you visit. You can go through it with your partner.</string>
+    <string name="journal_empty">No events yet.</string>
+    <string name="ev_LOCK_ENGAGED">Lock turned on</string>
+    <string name="ev_RELEASE_REQUESTED">Unlock requested (delay started)</string>
+    <string name="ev_RELEASE_CANCELLED">Unlock request cancelled</string>
+    <string name="ev_RELEASE_COMPLETED">Delay elapsed: protection unlocked</string>
+    <string name="ev_PARTNER_UNLOCK">Unlocked with the partner\'s code</string>
+    <string name="ev_PARTNER_CODE_FAILED">Wrong partner code</string>
+    <string name="ev_VPN_REVOKED">Network filter switched off (other VPN or disabled)</string>
+    <string name="ev_VPN_STARTED">Network filter started</string>
+    <string name="ev_ACCESSIBILITY_LOST">App monitoring interrupted</string>
+    <string name="ev_ADMIN_DISABLE_REQUESTED">Attempt to remove the device administrator</string>
+    <string name="ev_PROTECTED_SCREEN_BLOCKED">Protected settings screen refused</string>
+    <string name="ev_CLOCK_CHANGED">Phone clock changed</string>
+    <string name="ev_PROTECTION_GAP">Protection interrupted (phone off, safe mode or force stop)</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_locked_note">Rempart is locked, these settings can\'t be changed.</string>
+    <string name="settings_safesearch">Enforce safe search</string>
+    <string name="settings_youtube">YouTube restricted mode</string>
+    <string name="settings_upstream">Filtering DNS resolver</string>
+    <string name="settings_lists_updated">Updated: %1$s</string>
+    <string name="settings_lists_never">List shipped with the app</string>
+    <string name="settings_update_now">Update lists now</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_body">Rempart follows the phone\'s language. On Android 13 and later, you can pick a different one for Rempart only.</string>
+    <string name="settings_language_button">Choose Rempart\'s language</string>
+    <string name="settings_device_owner">Device owner mode (advanced)</string>
+    <string name="settings_device_owner_body">The strongest protection. It also blocks safe mode, adding users and switching VPNs. You need a computer and a phone with no account to turn it on (see docs/DEVICE_OWNER.md).</string>
+
+    <!-- About -->
+    <string name="about_title">About and privacy</string>
+    <string name="about_body">Rempart is free software (GPL-3.0). It costs nothing, has no ads and no purchases.\n\nYour data stays with you. Rempart collects nothing and sends nothing. Pages are checked on the phone and then forgotten. Only a few counters (items blocked, days without relapse) and the integrity log are kept, on the phone.\n\nOn the network side, allowed addresses are looked up through the filtering resolver you chose (Cloudflare for Families by default). Blocklists update from GitHub once a week, over Wi-Fi.\n\nLists used: HaGeZi (GPL-3.0) and StevenBlack hosts (MIT).</string>
+    <string name="about_source">Source code</string>
+    <string name="about_version">Version %1$s</string>
+
+    <plurals name="home_streak">
+        <item quantity="one">%1$d day without relapse</item>
+        <item quantity="other">%1$d days without relapse</item>
+    </plurals>
+
+    <plurals name="home_blocked">
+        <item quantity="one">%1$d item blocked</item>
+        <item quantity="other">%1$d items blocked</item>
+    </plurals>
+
+    <plurals name="unlock_wrong">
+        <item quantity="one">Wrong code. %1$d attempt left before a pause.</item>
+        <item quantity="other">Wrong code. %1$d attempts left before a pause.</item>
+    </plurals>
+
+    <plurals name="settings_lists">
+        <item quantity="one">Lists: %1$d domain</item>
+        <item quantity="other">Lists: %1$d domains</item>
+    </plurals>
+</resources>

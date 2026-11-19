@@ -4,7 +4,7 @@ Cocher chaque point avant d'envoyer une version en production.
 
 ## Nom et identité
 - [ ] Vérifier la marque « Rempart » en classe 9 sur [data.inpi.fr](https://data.inpi.fr) et [EUIPO eSearch](https://euipo.europa.eu/eSearch/). La recherche automatique n'a trouvé aucune appli de filtrage « Rempart » sur les stores (seulement « Mutuelle du Rempart » `fr.mutlab.rempart`, des jeux et des sites touristiques). La base INPI demande une vérification manuelle (protection anti-robot).
-- [ ] Titre Play distinctif : « Rempart – Bloqueur de contenu adulte » (30 caractères max).
+- [ ] Titre Play distinctif : « Rempart - Bloqueur de contenu adulte » (30 caractères max).
 - [ ] Identifiant de paquet définitif (`org.tidalex.rempart` : **ne pourra plus changer** après la première publication).
 
 ## Qualité du code

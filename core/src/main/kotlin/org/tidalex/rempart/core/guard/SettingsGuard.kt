@@ -41,12 +41,19 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
         "arrêter", "stop", "désactiver", "deactivate", "administrat", "device admin",
         "accessibilit", "vpn", "effacer les données", "vider le stockage", "clear storage", "clear data",
         "oublier", "forget", "utiliser rempart", "use rempart",
+        // es / pt / de / it
+        "desinstalar", "forzar detención", "forzar cierre", "forçar parada", "forçar interrupção",
+        "deinstallieren", "stopp erzwingen", "beenden erzwingen", "disinstalla", "termina",
+        "desactivar", "desativar", "deaktivieren", "disattiva", "accesibilidad", "acessibilidade",
+        "bedienungshilfen", "accessibilità", "borrar datos", "limpar dados", "daten löschen",
+        "usar rempart", "rempart verwenden", "usa rempart",
     )
 
     /** Écrans dangereux même sans mention de Rempart. */
     private val alwaysDangerous = listOf(
         "dns privé", "private dns", "nom d'hôte du fournisseur dns", "private dns provider hostname",
-        "mode sans échec", "safe mode",
+        "mode sans échec", "safe mode", "dns privado", "privates dns", "dns privato",
+        "modo seguro", "abgesicherter modus", "modalità provvisoria",
     )
 
     fun evaluate(screen: ScreenSnapshot, locked: Boolean): GuardAction {

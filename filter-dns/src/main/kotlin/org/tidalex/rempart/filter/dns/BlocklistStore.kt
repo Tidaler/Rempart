@@ -14,8 +14,8 @@ import java.util.zip.GZIPInputStream
  * stockage privé de l'app au format binaire compact.
  */
 object BlocklistStore {
-    const val ASSET_NSFW = "blocklists/nsfw.txt.gz"
-    const val ASSET_DOH = "blocklists/doh.txt.gz"
+    const val ASSET_NSFW = "blocklists/nsfw.txt.gzip" // pas ".gz" : le packaging Android décompresserait le fichier
+    const val ASSET_DOH = "blocklists/doh.txt.gzip"
     private const val UPDATED_FILE = "blocklists/nsfw.bin"
     private const val MAGIC = 0x52454d50 // "REMP"
 

@@ -1,62 +1,73 @@
 # Rempart
 
-**Rempart** est une application Android gratuite, open source, sans publicité et sans achat intégré, qui aide les personnes dépendantes à la pornographie à s'en libérer. Elle bloque les sites pour adultes et les contenus trop dénudés sur tout le téléphone, et elle s'appuie sur un **partenaire de confiance** et un **délai d'attente** pour qu'on ne puisse pas la couper dans un moment de faiblesse.
+Rempart est une appli Android pour arrêter la pornographie. Elle bloque les sites pour adultes et les images trop dénudées sur tout le téléphone. Et surtout, elle tient bon dans les moments de faiblesse : une fois verrouillée, on ne peut plus la couper sur un coup de tête.
 
-> Rempart sert uniquement à **se protéger soi-même**, sur son propre téléphone, de son plein gré. Il n'a ni mode caché ni surveillance à distance. Il ne collecte aucune donnée.
+Elle est gratuite et open source. Pas de pub, pas d'achat, pas de compte. Rien ne quitte le téléphone.
 
-L'application suit la langue du téléphone (anglais et français pour l'instant ; ajouter une langue revient à traduire les fichiers `values/strings.xml`).
+Rempart sert à se protéger soi-même, sur son propre téléphone. Il n'a pas de mode caché et ne permet de surveiller personne.
 
-## Ce que fait Rempart
+L'appli s'affiche dans la langue du téléphone. Pour l'instant : anglais et français. Pour ajouter une langue, il suffit de traduire les fichiers `strings.xml`.
 
-| Protection | Comment | Module |
-|---|---|---|
-| Sites pour adultes, dans **tous** les navigateurs, en navigation privée aussi | VPN **local** de filtrage DNS (≈148 000 domaines, listes HaGeZi NSFW + StevenBlack), mots-clés pour les sites pas encore listés | `:filter-dns` |
-| Recherche sécurisée imposée | Google, Bing, DuckDuckGo et YouTube (mode restreint) redirigés par DNS vers leur version stricte | `:filter-dns` |
-| Contournement par DNS chiffré (DoH/DoT), DNS en dur (8.8.8.8…) | Résolveurs publics routés dans le VPN : DNS classique filtré, DoH/DoT/QUIC coupés, liste HaGeZi « DoH bypass » | `:filter-dns` |
-| Navigateurs intégrés aux applis (Xender, Vidmate…), navigateurs inconnus | Service d'accessibilité : lit la barre d'adresse et le contenu des WebView, ferme la page, affiche un écran d'encouragement | `:filter-accessibility` |
-| Impossible de désactiver ou désinstaller | Administrateur de l'appareil + garde des Réglages (fiche de l'app, accessibilité, VPN, DNS privé, désinstallation Play Store) | `:lock`, `:filter-accessibility` |
-| Seules sorties | **Code du partenaire de confiance** (empreinte PBKDF2, pause croissante après 5 erreurs) **ou** demande de déverrouillage exécutée après **72 h** de temps réel, annulable | `:core`, `:lock` |
-| Option avancée la plus solide | Mode « propriétaire de l'appareil » (ADB) : bloque aussi le mode sans échec, l'ajout d'utilisateurs, le changement de VPN, le DNS privé | `:lock`, [docs/DEVICE_OWNER.md](docs/DEVICE_OWNER.md) |
-| Accompagnement | Compteur de jours sans rechute, écran d'encouragement avec respiration guidée, appel du partenaire, ressources d'aide, journal d'intégrité | `:app` |
+## Comment ça marche
 
-**Limite honnête :** aucune application ne peut être rendue totalement impossible à retirer. Une réinitialisation d'usine efface toujours tout ; Rempart ne l'empêche volontairement pas. Voir [docs/SECURITE.md](docs/SECURITE.md) pour le modèle de menace complet.
+Rempart combine plusieurs protections, parce qu'aucune ne suffit seule.
 
-## Architecture
+**Un filtre réseau sur le téléphone.** Rempart crée un VPN local qui ne sort pas du téléphone. Il intercepte les demandes d'adresse (DNS) et refuse environ 148 000 sites pour adultes (listes HaGeZi et StevenBlack). Des mots-clés attrapent les sites trop récents pour être dans les listes. Google, Bing, DuckDuckGo et YouTube passent en mode strict.
+
+**Pas de contournement par DNS chiffré.** Chrome, Firefox ou une appli peuvent essayer de demander les adresses à Google ou Cloudflare en direct. Rempart coupe ces connexions, et le navigateur revient au DNS normal, donc filtré.
+
+**Un œil sur les navigateurs et les applis.** Grâce au service d'accessibilité, Rempart lit la barre d'adresse des navigateurs, y compris en navigation privée. Il regarde aussi les pages ouvertes dans d'autres applis (Xender, Vidmate…). Si c'est interdit, la page se ferme et un écran d'encouragement apparaît.
+
+**Un verrou.** Une fois verrouillé, Android refuse de désinstaller Rempart, et les réglages qui permettraient de le couper ne s'ouvrent plus. Il n'y a que deux façons d'en sortir :
+- le code de ton partenaire de confiance (après 5 erreurs, il faut attendre de plus en plus longtemps) ;
+- une demande de déverrouillage, qui ne s'exécute qu'après 72 h de téléphone allumé. Tu peux l'annuler à tout moment. Changer l'heure ne sert à rien.
+
+**Pour les plus motivés**, le mode « propriétaire de l'appareil » bloque aussi le mode sans échec, l'ajout d'utilisateurs et le changement de VPN. Il s'active avec un ordinateur, voir [docs/DEVICE_OWNER.md](docs/DEVICE_OWNER.md).
+
+**De l'aide, pas seulement des murs.** Un compteur de jours sans rechute, un écran de respiration quand l'envie monte, un bouton pour appeler ton partenaire, des ressources d'aide et un journal qui montre si quelqu'un a tenté de couper la protection.
+
+Soyons clairs sur une limite : aucune appli ne peut être impossible à retirer. Une réinitialisation d'usine efface tout, et Rempart ne l'empêche pas exprès. Le détail des contournements testés est dans [docs/SECURITE.md](docs/SECURITE.md).
+
+## Organisation du code
 
 ```
-:core                   Kotlin pur (sans Android) : listes, mots-clés, SafeSearch, verrou,
-                        délai monotone, code partenaire, garde des Réglages, compteur.
-                        → deviendra le module partagé Kotlin Multiplatform pour l'iPhone.
-:filter-dns             VpnService local, analyse IP/UDP/DNS, résolveur amont filtrant,
-                        mise à jour hebdomadaire des listes (WorkManager).
-:filter-accessibility   AccessibilityService : navigateurs, WebView, garde des Réglages.
-:lock                   Persistance du verrou, administrateur, mode propriétaire, battement.
-:filter-image           (prévu) classifieur d'images sur l'appareil, optionnel.
-:app                    Interface Jetpack Compose, assemblage des modules.
+:core                   Kotlin pur, sans Android : listes, mots-clés, SafeSearch, verrou,
+                        délai, code partenaire, garde des Réglages, compteur.
+                        Il servira de base commune pour la future version iPhone.
+:filter-dns             VPN local, lecture des paquets DNS, résolveur filtrant,
+                        mise à jour des listes chaque semaine.
+:filter-accessibility   Service d'accessibilité : navigateurs, pages dans les applis, Réglages.
+:lock                   Sauvegarde du verrou, administrateur, mode propriétaire, battement.
+:filter-image           Détection d'images (en préparation, sans modèle pour l'instant).
+:app                    Interface Jetpack Compose, qui relie le tout.
 ```
 
 ## Construire et tester
 
-Prérequis : JDK 17+ et le SDK Android (installé par Android Studio). Ouvrir le dossier dans Android Studio (**File › Open**) ou utiliser la ligne de commande :
+Il faut un JDK 17 ou plus récent et le SDK Android (Android Studio l'installe). Ouvre le dossier dans Android Studio avec **File › Open**, ou passe par la ligne de commande :
 
 ```bash
-./gradlew test                      # tests unitaires et d'intégration (PC)
-./gradlew :app:assembleDebug        # APK de développement
-./gradlew connectedDebugAndroidTest # tests d'instrumentation (émulateur ou téléphone branché)
-./gradlew lint                      # analyse statique
+./gradlew test                  # tests sur PC
+./gradlew :app:assembleDebug    # APK de développement
+./gradlew lint                  # analyse du code
+bash tools/e2e_emulator.sh      # tests sur l'émulateur ou un téléphone de test
 ```
 
-Mettre à jour les listes embarquées : `python tools/update_blocklists.py`.
+Le script `e2e_emulator.sh` prépare l'appareil (VPN, accessibilité, administrateur), lance les tests, puis vérifie qu'Android refuse bien la désinstallation.
+
+Aujourd'hui, 113 tests passent sur PC et 12 sur un émulateur Android 16.
+
+Pour mettre à jour les listes livrées avec l'appli : `python tools/update_blocklists.py`.
 
 ## Licence
 
-GPL-3.0 — voir [LICENSE](LICENSE). Les listes de blocage tierces et leurs licences sont décrites dans [NOTICE.md](NOTICE.md).
+GPL-3.0, voir [LICENSE](LICENSE). Les listes tierces et leurs licences sont dans [NOTICE.md](NOTICE.md).
 
-## Documentation
+## Pour aller plus loin
 
-- [docs/SECURITE.md](docs/SECURITE.md) — modèle de menace, contournements testés
-- [docs/DEVICE_OWNER.md](docs/DEVICE_OWNER.md) — mode propriétaire de l'appareil (avancé)
-- [docs/CONFIDENTIALITE.md](docs/CONFIDENTIALITE.md) — politique de confidentialité
-- [docs/CHECKLIST_PUBLICATION.md](docs/CHECKLIST_PUBLICATION.md) — avant la publication sur Google Play
-- [docs/PLAN_IPHONE.md](docs/PLAN_IPHONE.md) — plan de la version iPhone
-- [docs/maquettes/](docs/maquettes/) — maquettes des écrans
+- [Sécurité et contournements](docs/SECURITE.md)
+- [Mode propriétaire de l'appareil](docs/DEVICE_OWNER.md)
+- [Politique de confidentialité](docs/CONFIDENTIALITE.md)
+- [Avant de publier sur Google Play](docs/CHECKLIST_PUBLICATION.md)
+- [Plan pour l'iPhone](docs/PLAN_IPHONE.md)
+- [Maquettes des écrans](docs/maquettes/)

@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.tidalex.rempart.core.domain.ContentPolicy
-import org.tidalex.rempart.core.domain.DomainBlocklist
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
@@ -34,7 +33,7 @@ class RempartVpnService : VpnService() {
     private var worker: Thread? = null
     private val pool = Executors.newFixedThreadPool(4)
     private var engine: DnsFilterEngine? = null
-    private val policy = ContentPolicy(DomainBlocklist.EMPTY)
+    private val policy: ContentPolicy by lazy { SharedPolicy.get(this) }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -50,7 +49,7 @@ class RempartVpnService : VpnService() {
 
     private fun run() {
         try {
-            reload()
+            policy // chargement des listes avant d'ouvrir le VPN
             val settings = FilterSettings(this)
             val eng = DnsFilterEngine(
                 policy = policy,
@@ -113,8 +112,7 @@ class RempartVpnService : VpnService() {
     }
 
     private fun reload() {
-        policy.blocklist = BlocklistStore.loadNsfw(this)
-        policy.bypassList = BlocklistStore.loadBypass(this)
+        SharedPolicy.reload(this)
     }
 
     override fun onRevoke() {
@@ -141,32 +139,39 @@ class RempartVpnService : VpnService() {
 
     private fun startInForeground() {
         val nm = getSystemService(NotificationManager::class.java)
-        nm.createNotificationChannel(NotificationChannel(CHANNEL, "Protection active", NotificationManager.IMPORTANCE_MIN))
+        nm.createNotificationChannel(NotificationChannel(CHANNEL, getString(R.string.vpn_channel_protection), NotificationManager.IMPORTANCE_MIN))
         val n: Notification = NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(android.R.drawable.ic_lock_lock)
-            .setContentTitle("Rempart te protège")
-            .setContentText("Filtre réseau actif sur ce téléphone, sans serveur distant.")
+            .setContentTitle(getString(R.string.vpn_notif_title))
+            .setContentText(getString(R.string.vpn_notif_text))
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .build()
-        if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
-        } else {
-            startForeground(NOTIF_ID, n)
+        // Le type « systemExempted » n'est accordé qu'aux applis VPN configurées / administrateurs.
+        // Juste après le premier consentement il peut être refusé : le service VPN, lié par
+        // le système, reste alors actif sans être « de premier plan ».
+        try {
+            if (Build.VERSION.SDK_INT >= 34) {
+                startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
+            } else {
+                startForeground(NOTIF_ID, n)
+            }
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "service de premier plan refusé, poursuite sans", e)
         }
     }
 
     private fun notifyRevoked() {
         val nm = getSystemService(NotificationManager::class.java)
-        nm.createNotificationChannel(NotificationChannel(CHANNEL_ALERT, "Alertes de protection", NotificationManager.IMPORTANCE_HIGH))
+        nm.createNotificationChannel(NotificationChannel(CHANNEL_ALERT, getString(R.string.vpn_channel_alerts), NotificationManager.IMPORTANCE_HIGH))
         val launch = packageManager.getLaunchIntentForPackage(packageName)
         val pi = launch?.let { PendingIntent.getActivity(this, 1, it, PendingIntent.FLAG_IMMUTABLE) }
         nm.notify(
             NOTIF_ALERT_ID,
             NotificationCompat.Builder(this, CHANNEL_ALERT)
                 .setSmallIcon(android.R.drawable.stat_sys_warning)
-                .setContentTitle("Le filtre réseau de Rempart est coupé")
-                .setContentText("Touche ici pour le réactiver.")
+                .setContentTitle(getString(R.string.vpn_revoked_title))
+                .setContentText(getString(R.string.vpn_revoked_text))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
                 .build(),
@@ -201,7 +206,12 @@ class RempartVpnService : VpnService() {
 
         fun start(context: Context) {
             FilterSettings(context).wanted = true
-            ContextCompat.startForegroundService(context, Intent(context, RempartVpnService::class.java).setAction(ACTION_START))
+            val intent = Intent(context, RempartVpnService::class.java).setAction(ACTION_START)
+            try {
+                context.startService(intent) // appli au premier plan : démarrage simple
+            } catch (e: IllegalStateException) {
+                ContextCompat.startForegroundService(context, intent) // démarrage du téléphone
+            }
         }
 
         /** Arrêt volontaire : l'app ne l'autorise que si le verrou est ouvert. */
