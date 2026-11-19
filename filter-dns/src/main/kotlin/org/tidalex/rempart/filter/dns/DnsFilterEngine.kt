@@ -25,7 +25,8 @@ fun interface DnsUpstream {
  */
 class DnsFilterEngine(
     private val policy: ContentPolicy,
-    private val upstream: DnsUpstream,
+    /** Remplaçable à chaud quand l'utilisateur change de résolveur. */
+    @Volatile var upstream: DnsUpstream,
     @Volatile var safeSearch: Boolean = true,
     @Volatile var youtubeRestricted: Boolean = true,
 ) {

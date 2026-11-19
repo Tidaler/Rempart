@@ -9,7 +9,6 @@ import android.app.UiAutomation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Configurator
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Assume.assumeTrue
@@ -41,6 +40,7 @@ class ProtectionEndToEndTest {
     private val partnerCode = "E2E-TEST-CODE-7"
 
     @Before fun startFilter() {
+        TestLockReset.reset(context)
         RempartApp.wire(context)
         assumeTrue("consentement VPN requis (voir tools/e2e_emulator.sh)", RempartVpnService.prepare(context) == null)
         RempartVpnService.start(context)
@@ -51,8 +51,7 @@ class ProtectionEndToEndTest {
     }
 
     @After fun cleanUp() {
-        val repo = LockRepository.get(context)
-        if (repo.isLocked) repo.unlockWithPartnerCode(partnerCode)
+        TestLockReset.reset(context)
         RempartVpnService.stop(context)
         device.pressHome()
     }
@@ -79,6 +78,14 @@ class ProtectionEndToEndTest {
     }
 
     private fun hasPackage(pkg: String) = shell("pm path $pkg").contains("package:")
+
+    /**
+     * L'écran de blocage est-il au premier plan ? On interroge le gestionnaire de
+     * fenêtres plutôt que l'arbre d'accessibilité : après un test Compose dans le même
+     * processus, UiAutomator ne lit plus toujours le texte des nouvelles fenêtres.
+     */
+    private fun blockedScreenInFront(): Boolean =
+        shell("dumpsys window").lineSequence().any { it.contains("mCurrentFocus") && it.contains("BlockedActivity") }
 
     private fun resolve(host: String): List<String> =
         runCatching { InetAddress.getAllByName(host).map { it.hostAddress!! } }.getOrDefault(emptyList())
@@ -117,7 +124,6 @@ class ProtectionEndToEndTest {
             Intent(Intent.ACTION_VIEW, Uri.parse("https://www.pornhub.com/")).setPackage("com.android.chrome")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         )
-        val title = context.getString(R.string.blocked_title)
         // Chrome peut afficher une invitation (notifications, connexion) qui masque la barre d'adresse.
         val t0 = System.currentTimeMillis()
         var seen = false
@@ -125,7 +131,8 @@ class ProtectionEndToEndTest {
             listOf("No thanks", "Non merci", "Use without an account", "Accept & continue").forEach { label ->
                 device.findObject(By.text(label))?.click()
             }
-            seen = device.wait(Until.hasObject(By.text(title)), 2_000)
+            Thread.sleep(1_000)
+            seen = blockedScreenInFront()
         }
         assertThat(seen).isTrue()
     }
@@ -139,8 +146,9 @@ class ProtectionEndToEndTest {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         )
-        val title = context.getString(R.string.blocked_settings_title)
-        assertThat(device.wait(Until.hasObject(By.text(title)), 15_000)).isTrue()
+        val t0 = System.currentTimeMillis()
+        while (!blockedScreenInFront() && System.currentTimeMillis() - t0 < 15_000) Thread.sleep(500)
+        assertThat(blockedScreenInFront()).isTrue()
         assertThat(repo.log.value.map { it.event.name }).contains("PROTECTED_SCREEN_BLOCKED")
     }
 }

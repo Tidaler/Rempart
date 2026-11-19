@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.provider.Settings
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import org.tidalex.rempart.core.domain.BlockReason
@@ -33,6 +34,7 @@ class RempartAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         connected = true
+        instance = this
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
@@ -57,6 +59,7 @@ class RempartAccessibilityService : AccessibilityService() {
                 Hooks.onBlocked?.invoke(this, decision.reason)
             }
             ScreenDecision.LeaveProtectedSettings -> act(now) {
+                Log.i(TAG, "écran protégé quitté (${analyzer.guard.lastReason})") // règle seulement, jamais le texte lu
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 performGlobalAction(GLOBAL_ACTION_HOME)
                 LockRepository.get(this).record(IntegrityEvent.PROTECTED_SCREEN_BLOCKED)
@@ -84,6 +87,7 @@ class RempartAccessibilityService : AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         connected = false
+        instance = null
         val repo = LockRepository.get(this)
         if (repo.isLocked) repo.record(IntegrityEvent.ACCESSIBILITY_LOST)
         return super.onUnbind(intent)
@@ -106,6 +110,7 @@ class RempartAccessibilityService : AccessibilityService() {
     }
 
     companion object {
+        private const val TAG = "RempartGuard"
         const val ACTION_BLOCKED = "org.tidalex.rempart.action.BLOCKED"
         const val EXTRA_REASON = "reason"
         private const val THROTTLE_MS = 350L
@@ -114,6 +119,13 @@ class RempartAccessibilityService : AccessibilityService() {
 
         @Volatile var connected = false
             private set
+
+        @Volatile private var instance: RempartAccessibilityService? = null
+
+        /** Arrêt demandé depuis l'appli (protection ouverte seulement, vérifié par l'appelant). */
+        fun turnOff() {
+            instance?.let { svc -> svc.main.post { runCatching { svc.disableSelf() } } }
+        }
 
         /** Vérité système : le service est-il activé dans les réglages ? */
         fun isEnabled(context: Context): Boolean {

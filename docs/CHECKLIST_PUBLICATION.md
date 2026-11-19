@@ -25,6 +25,8 @@ Cocher chaque point avant d'envoyer une version en production.
 - [ ] **Accessibilité** : `isAccessibilityTool="false"` → remplir le formulaire de déclaration avec une **vidéo** montrant la divulgation, le consentement et l'usage (fermeture d'une page adulte, garde des Réglages). La divulgation in-app apparaît avant l'ouverture des réglages d'accessibilité (déjà en place).
 - [ ] **Administrateur de l'appareil** : justification (empêcher la désinstallation pendant le verrou choisi par l'utilisateur), divulgation claire, sortie possible (partenaire / délai).
 - [ ] **Service de premier plan** `systemExempted` (VPN) : déclaration du type dans la console.
+- [ ] **Exemption de batterie** (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`) : Google Play la réserve aux applis dont la fonction principale casse sans elle. Préparer la justification : filtre de contenu permanent, coupé par la veille d'Android sinon. Si Google refuse, remplacer la demande directe par l'ouverture de la liste des optimisations (`Battery.fallbackIntent()`), qui ne demande aucune permission.
+- [ ] Vérifier sur au moins un téléphone Tecno/Infinix, un Xiaomi et un Samsung que le bouton « Lancement automatique » ouvre le bon écran.
 - [ ] Politique « Appareil et réseau » : pas de comportement caché, pas d'installation à l'insu d'autrui, sortie toujours possible (réinitialisation d'usine non bloquée, délai annulable).
 - [ ] Classification du contenu : questionnaire IARC (l'appli ne montre aucun contenu adulte).
 - [ ] Public cible : 18 ans et plus (outil d'auto-assistance pour adultes ; pas destiné aux enfants).

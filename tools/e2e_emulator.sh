@@ -24,7 +24,9 @@ $ADB shell settings put secure accessibility_enabled 1
 $ADB shell dpm set-active-admin "$ADMIN" || true
 # 4. Notifications.
 $ADB shell pm grant $PKG android.permission.POST_NOTIFICATIONS || true
-# 5. Chrome sans écran de bienvenue.
+# 5. Aucune limite de batterie (équivaut à accepter la demande de l'appli).
+$ADB shell dumpsys deviceidle whitelist +$PKG >/dev/null
+# 6. Chrome sans écran de bienvenue.
 $ADB shell am set-debug-app --persistent com.android.chrome || true
 $ADB shell 'echo "_ --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line' || true
 

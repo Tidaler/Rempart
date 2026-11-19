@@ -23,3 +23,6 @@ keystore.properties
 Thumbs.db
 # Téléchargements temporaires des listes
 /tools/.cache/
+
+# Dossiers de diffusion générés (APK + LISEZ-MOI rempli)
+/distribution/Rempart-*/

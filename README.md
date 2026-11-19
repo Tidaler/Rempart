@@ -1,10 +1,14 @@
 # Rempart
 
-Rempart est une appli Android pour arrêter la pornographie. Elle bloque les sites pour adultes et les images trop dénudées sur tout le téléphone. Et surtout, elle tient bon dans les moments de faiblesse : une fois verrouillée, on ne peut plus la couper sur un coup de tête.
+Rempart est une appli Android pour arrêter la pornographie. Elle bloque les sites pour adultes et les sites d'images très dénudées sur tout le téléphone. Et surtout, elle tient bon dans les moments de faiblesse : une fois verrouillée, on ne peut plus la couper sur un coup de tête.
 
 Elle est gratuite et open source. Pas de pub, pas d'achat, pas de compte. Rien ne quitte le téléphone.
 
 Rempart sert à se protéger soi-même, sur son propre téléphone. Il n'a pas de mode caché et ne permet de surveiller personne.
+
+## Télécharger
+
+La dernière version se trouve dans les [Releases](https://github.com/Tidaler/Rempart/releases/latest) : télécharge `Rempart-<version>.apk` sur ton téléphone Android (8.0 ou plus récent) et ouvre-le. Le fichier `LISEZ-MOI.txt` à côté explique l'installation pas à pas. Rempart n'est pas encore sur le Play Store.
 
 L'appli s'affiche dans la langue du téléphone. Pour l'instant : anglais et français. Pour ajouter une langue, il suffit de traduire les fichiers `strings.xml`.
 
@@ -55,7 +59,7 @@ bash tools/e2e_emulator.sh      # tests sur l'émulateur ou un téléphone de te
 
 Le script `e2e_emulator.sh` prépare l'appareil (VPN, accessibilité, administrateur), lance les tests, puis vérifie qu'Android refuse bien la désinstallation.
 
-Aujourd'hui, 113 tests passent sur PC et 12 sur un émulateur Android 16.
+Aujourd'hui, 117 tests passent sur PC et 13 sur un émulateur Android 16.
 
 Pour mettre à jour les listes livrées avec l'appli : `python tools/update_blocklists.py`.
 

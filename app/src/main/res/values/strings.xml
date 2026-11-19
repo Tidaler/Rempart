@@ -13,7 +13,7 @@
 
     <!-- Welcome / consent -->
     <string name="welcome_title">Welcome to Rempart</string>
-    <string name="welcome_body">Rempart helps you quit porn. It blocks adult websites and overly revealing images, in every browser and inside apps.\n\nIt is free and open source. No ads, no purchases. Nothing leaves your phone.</string>
+    <string name="welcome_body">Rempart helps you quit porn. It blocks adult websites and sites full of very revealing images, in every browser and inside apps.\n\nIt is free and open source. No ads, no purchases. Nothing leaves your phone.</string>
     <string name="welcome_self_use">I am installing Rempart for myself, on my own phone, of my own free will.</string>
     <string name="welcome_self_use_hint">Nobody should install it on someone else\'s phone. Rempart has no hidden mode and can\'t be used to watch anyone.</string>
     <string name="welcome_privacy_link">Read the privacy policy</string>
@@ -192,4 +192,17 @@
         <item quantity="one">Lists: %1$d domain</item>
         <item quantity="other">Lists: %1$d domains</item>
     </plurals>
+    <string name="setup_all_button">Allow everything</string>
+    <string name="setup_all_hint">Rempart will open each permission screen one after the other. Say yes on each one, then come back here.</string>
+    <string name="setup_battery_title">No battery limits</string>
+    <string name="setup_battery_body">So Android never shuts down the filter to save battery. Rempart itself uses very little power.</string>
+    <string name="setup_autostart_title">Automatic launch</string>
+    <string name="setup_autostart_body">Your phone stops apps from starting on their own. In the screen that opens, turn Rempart on so it restarts after a reboot.</string>
+    <string name="setup_autostart_button">Open</string>
+    <string name="setup_back_home">Back to home</string>
+    <string name="home_status_battery">No battery limits</string>
+    <string name="partner_locked_note">Rempart is locked, so your partner can\'t be changed right now. You can do it once it\'s unlocked.</string>
+    <string name="permissions_channel">Permissions</string>
+    <string name="permissions_notif_title">Rempart needs your OK</string>
+    <string name="permissions_notif_text">A permission went missing with the update. Tap here to give it back.</string>
 </resources>

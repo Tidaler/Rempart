@@ -49,6 +49,7 @@ import org.tidalex.rempart.core.lock.Phase
 import org.tidalex.rempart.core.lock.UnlockResult
 import org.tidalex.rempart.filter.dns.BlocklistUpdateWorker
 import org.tidalex.rempart.filter.dns.FilterSettings
+import org.tidalex.rempart.filter.dns.RempartVpnService
 import org.tidalex.rempart.filter.dns.UpstreamChoice
 import org.tidalex.rempart.lock.LockRepository
 import org.tidalex.rempart.rememberUiTick
@@ -86,6 +87,7 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
             StatusLine(stringResource(R.string.home_status_vpn), status.vpnRunning, fix)
             StatusLine(stringResource(R.string.home_status_a11y), status.accessibility, fix)
             StatusLine(stringResource(R.string.home_status_admin), status.admin, fix)
+            StatusLine(stringResource(R.string.home_status_battery), status.battery, fix)
             if (status.deviceOwner) StatusLine(stringResource(R.string.home_status_owner), true)
         }
 
@@ -248,13 +250,13 @@ fun SettingsScreen(onBack: () -> Unit) {
     ScreenScaffold(stringResource(R.string.settings_title), onBack) {
         if (locked) InfoCard(container = MaterialTheme.colorScheme.secondaryContainer) { Text(stringResource(R.string.settings_locked_note)) }
         InfoCard {
-            ToggleRow(stringResource(R.string.settings_safesearch), safe, enabled = !locked) { safe = it; settings.safeSearch = it }
-            ToggleRow(stringResource(R.string.settings_youtube), yt, enabled = !locked) { yt = it; settings.youtubeRestricted = it }
+            ToggleRow(stringResource(R.string.settings_safesearch), safe, enabled = !locked) { safe = it; settings.safeSearch = it; RempartVpnService.applySettings(context) }
+            ToggleRow(stringResource(R.string.settings_youtube), yt, enabled = !locked) { yt = it; settings.youtubeRestricted = it; RempartVpnService.applySettings(context) }
         }
         InfoCard {
             Text(stringResource(R.string.settings_upstream), style = MaterialTheme.typography.titleMedium)
             UpstreamChoice.entries.forEach { c ->
-                Row(Modifier.fillMaxWidth().selectable(upstream == c, enabled = !locked) { upstream = c; settings.upstream = c },
+                Row(Modifier.fillMaxWidth().selectable(upstream == c, enabled = !locked) { upstream = c; settings.upstream = c; RempartVpnService.applySettings(context) },
                     verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(selected = upstream == c, onClick = null, enabled = !locked)
                     Text(c.label)

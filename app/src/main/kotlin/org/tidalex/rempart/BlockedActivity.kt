@@ -30,10 +30,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -79,15 +81,16 @@ class BlockedActivity : ComponentActivity() {
 @Composable
 fun BlockedScreen(reason: BlockReason?, onHome: () -> Unit) {
     val context = LocalContext.current
-    val streak = StreakRepository(context).get()
-    val days = streak.currentDays(LocalDate.now())
+    // Calculés une seule fois : avant, la respiration animée relisait le stockage à chaque image.
+    val days = remember { StreakRepository(context).get().currentDays(LocalDate.now()) }
     val messages = stringArrayResource(R.array.encouragements)
-    val message = messages[((days + System.currentTimeMillis() / 60_000) % messages.size).toInt()]
+    val message = remember(messages) { messages[((days + System.currentTimeMillis() / 60_000) % messages.size).toInt()] }
     val partner by LockRepository.get(context).state.collectAsStateWithLifecycle()
     val settings = reason == BlockReason.PROTECTED_SETTINGS
 
     val breath = rememberInfiniteTransition(label = "breath")
-    val scale by breath.animateFloat(0.6f, 1f, infiniteRepeatable(tween(5000, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "scale")
+    val scale = breath.animateFloat(0.6f, 1f, infiniteRepeatable(tween(5000, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "scale")
+    val exhale by remember { derivedStateOf { scale.value > 0.8f } }
 
     Column(
         Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().verticalScroll(rememberScrollState()).padding(24.dp),
@@ -102,8 +105,8 @@ fun BlockedScreen(reason: BlockReason?, onHome: () -> Unit) {
         Text(if (settings) stringResource(R.string.blocked_settings_body) else message, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
 
         Box(Modifier.size(200.dp), contentAlignment = Alignment.Center) {
-            Box(Modifier.size(200.dp).scale(scale).background(MaterialTheme.colorScheme.primaryContainer, CircleShape))
-            Text(stringResource(if (scale > 0.8f) R.string.blocked_exhale else R.string.blocked_inhale), style = MaterialTheme.typography.titleMedium)
+            Box(Modifier.size(200.dp).graphicsLayer { scaleX = scale.value; scaleY = scale.value }.background(MaterialTheme.colorScheme.primaryContainer, CircleShape))
+            Text(stringResource(if (exhale) R.string.blocked_exhale else R.string.blocked_inhale), style = MaterialTheme.typography.titleMedium)
         }
         Text(stringResource(R.string.blocked_breathe), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
 

@@ -1,14 +1,11 @@
 package org.tidalex.rempart.lock
 
 import android.content.Context
-import android.os.SystemClock
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import org.tidalex.rempart.core.integrity.HeartbeatGap
-import org.tidalex.rempart.core.integrity.IntegrityEvent
 import java.util.concurrent.TimeUnit
 
 /**
@@ -18,27 +15,28 @@ import java.util.concurrent.TimeUnit
  */
 class HeartbeatWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
     override fun doWork(): Result {
-        beat(applicationContext)
+        beat(applicationContext, periodic = true)
         return Result.success()
     }
 
     companion object {
-        private const val MAX_GAP_MS = 45L * 60_000
-        /** Action supplémentaire (relancer le VPN…) branchée par le module :app. */
-        @Volatile var onBeat: ((Context) -> Unit)? = null
+        /**
+         * Action supplémentaire branchée par le module :app : relancer le filtre et,
+         * lors d'un battement périodique, noter une interruption s'il était arrêté.
+         */
+        @Volatile var onBeat: ((Context, Boolean) -> Unit)? = null
 
-        fun beat(context: Context) {
+        /**
+         * Avant, un trou de plus de 45 min entre deux battements était noté comme
+         * une interruption. Mais Android retarde les tâches pendant la veille
+         * (Doze) : le journal se remplissait de fausses alertes chaque nuit.
+         * On constate désormais l'interruption directement (filtre arrêté).
+         */
+        fun beat(context: Context, periodic: Boolean = false) {
             val repo = LockRepository.get(context)
             repo.tick()
-            val prefs = context.getSharedPreferences("rempart_heartbeat", Context.MODE_PRIVATE)
-            val now = SystemClock.elapsedRealtime()
-            val prev = prefs.getLong("last", -1)
-            if (prev >= 0 && repo.isLocked && HeartbeatGap.isGap(prev, now, MAX_GAP_MS)) {
-                repo.record(IntegrityEvent.PROTECTION_GAP)
-            }
-            prefs.edit().putLong("last", now).apply()
             if (repo.isLocked) DeviceOwnerPolicies.apply(context)
-            runCatching { onBeat?.invoke(context) }
+            runCatching { onBeat?.invoke(context, periodic) }
         }
 
         fun schedule(context: Context) {
