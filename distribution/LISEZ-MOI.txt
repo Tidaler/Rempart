@@ -58,6 +58,16 @@ INSTALLER REMPART
 5. Google Play Protect peut afficher un avertissement, parce que Rempart ne
    vient pas encore du Play Store. Touche "Plus de détails" puis "Installer
    quand même". Le code de l'appli est public, tu peux le vérifier (lien plus bas).
+6. Si Play Protect tourne longtemps puis dit que ta connexion internet est
+   mauvaise alors qu'internet marche, c'est son analyse qui a échoué, pas ta
+   connexion. Touche "Plus de détails" puis "Installer sans analyser", ou
+   annule et relance l'installation : la deuxième fois, l'analyse passe
+   souvent.
+
+Rempart est déjà installé dans une ancienne version de test ? Android refusera
+d'installer celle-ci par-dessus ("Appli non installée"), car elles ne sont pas
+signées pareil. Déverrouille Rempart, désinstalle l'ancienne version, puis
+installe celle-ci.
 
 
 ------------------------------------------------------------------
