@@ -29,7 +29,7 @@ sealed interface ScreenDecision {
  */
 class ScreenAnalyzer(
     private val policyProvider: () -> ContentPolicy,
-    private val guard: SettingsGuard = SettingsGuard(),
+    val guard: SettingsGuard = SettingsGuard(),
     private val maxNodes: Int = 600,
     private val maxDepth: Int = 40,
 ) {

@@ -59,6 +59,39 @@ class SettingsGuardTest {
         assertThat(guard.evaluate(s("com.android.settings", "Optimisation de la batterie", "WhatsApp"), true)).isEqualTo(GuardAction.NONE)
     }
 
+    @Test fun `power screens opened by Rempart itself stay usable for a short while`() {
+        val grant = s("com.android.settings", "Let app always run in background?", "Allowing Rempart to always run in the background may reduce battery life.", "Deny", "Allow")
+        val autostart = s("com.transsion.phonemaster", "Auto-start", "Rempart")
+        try {
+            assertThat(guard.evaluate(grant, true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+            PowerScreensGrace.open()
+            assertThat(guard.evaluate(grant, true)).isEqualTo(GuardAction.NONE)
+            assertThat(guard.evaluate(autostart, true)).isEqualTo(GuardAction.NONE)
+            // Vrai écran Tecno « App Launch » : une autre appli de la liste a « VPN » dans son nom.
+            val tecnoList = s("com.transsion.phonemaster", "App Launch",
+                "After the startup management is enabled, the app will start automatically in the background",
+                "Manage All", "Rempart", "Prohibited", "Turbo VPN", "Allowed", "Intelligent Optimization")
+            assertThat(guard.evaluate(tecnoList, true)).isEqualTo(GuardAction.NONE)
+            assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Use Rempart"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+            assertThat(guard.evaluate(s("com.android.settings", "Deactivate this device admin app", "Rempart"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+            assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Forget VPN"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+            // Les écrans vraiment dangereux restent bloqués pendant la fenêtre.
+            assertThat(guard.evaluate(s("com.android.settings", "App info", "Rempart", "Uninstall", "Force stop"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+            assertThat(guard.evaluate(s("com.android.settings", "Private DNS"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        } finally {
+            PowerScreensGrace.close()
+        }
+        assertThat(guard.evaluate(grant, true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.lastReason).isEqualTo("com.android.settings: battery")
+    }
+
+    @Test fun `power grace window expires on the monotonic clock`() {
+        PowerScreensGrace.open(nowNanos = 0)
+        assertThat(PowerScreensGrace.isOpen(nowNanos = 60_000_000_000)).isTrue()
+        assertThat(PowerScreensGrace.isOpen(nowNanos = 121_000_000_000)).isFalse()
+        PowerScreensGrace.close()
+    }
+
     @Test fun `nothing is blocked when the lock is open`() {
         assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Désinstaller"), false)).isEqualTo(GuardAction.NONE)
     }

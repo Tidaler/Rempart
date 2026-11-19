@@ -46,6 +46,7 @@ import org.tidalex.rempart.PermissionStep
 import org.tidalex.rempart.Permissions
 import org.tidalex.rempart.Protection
 import org.tidalex.rempart.R
+import org.tidalex.rempart.core.guard.PowerScreensGrace
 import org.tidalex.rempart.core.lock.CodeProblem
 import org.tidalex.rempart.core.lock.PartnerSecret
 import org.tidalex.rempart.filter.dns.RempartVpnService
@@ -105,11 +106,14 @@ fun SetupScreen(onboardingDone: Boolean, onNext: () -> Unit) {
                 if (consent == null) { RempartVpnService.start(context); next.value() }
                 else if (!launch(consent)) next.value()
             }
-            PermissionStep.BATTERY ->
+            PermissionStep.BATTERY -> {
+                PowerScreensGrace.open() // sinon, verrou actif, le garde fermerait la fenêtre d'autorisation
                 if (!launch(Battery.requestIntent(context)) && !launch(Battery.fallbackIntent())) next.value()
+            }
             PermissionStep.ADMIN ->
                 if (!launch(RempartAdminReceiver.activationIntent(context, context.getString(R.string.setup_admin_body)))) next.value()
             PermissionStep.AUTOSTART -> {
+                PowerScreensGrace.open()
                 AutoStart.markAsked(context)
                 if (!launch(AutoStart.intent(context))) next.value()
             }
@@ -151,7 +155,8 @@ fun SetupScreen(onboardingDone: Boolean, onNext: () -> Unit) {
         if (Build.VERSION.SDK_INT >= 33) {
             SetupStep(R.string.setup_notif_title, R.string.setup_notif_body, status.notifications, "stepNotif") { open(PermissionStep.NOTIFICATIONS) }
         }
-        if (!DeviceOwnerPolicies.isDeviceOwner(context)) {
+        // Verrou actif : les réglages VPN sont protégés, le bouton mènerait à un écran refermé aussitôt.
+        if (!DeviceOwnerPolicies.isDeviceOwner(context) && !LockRepository.get(context).isLocked) {
             InfoCard(container = MaterialTheme.colorScheme.secondaryContainer) {
                 Text(stringResource(R.string.setup_always_on_title), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.setup_always_on_body), style = MaterialTheme.typography.bodyMedium)

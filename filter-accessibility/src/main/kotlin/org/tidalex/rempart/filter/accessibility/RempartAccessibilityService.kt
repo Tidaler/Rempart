@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.provider.Settings
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import org.tidalex.rempart.core.domain.BlockReason
@@ -58,6 +59,7 @@ class RempartAccessibilityService : AccessibilityService() {
                 Hooks.onBlocked?.invoke(this, decision.reason)
             }
             ScreenDecision.LeaveProtectedSettings -> act(now) {
+                Log.i(TAG, "écran protégé quitté (${analyzer.guard.lastReason})") // règle seulement, jamais le texte lu
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 performGlobalAction(GLOBAL_ACTION_HOME)
                 LockRepository.get(this).record(IntegrityEvent.PROTECTED_SCREEN_BLOCKED)
@@ -108,6 +110,7 @@ class RempartAccessibilityService : AccessibilityService() {
     }
 
     companion object {
+        private const val TAG = "RempartGuard"
         const val ACTION_BLOCKED = "org.tidalex.rempart.action.BLOCKED"
         const val EXTRA_REASON = "reason"
         private const val THROTTLE_MS = 350L

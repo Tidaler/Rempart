@@ -47,7 +47,30 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
         "desactivar", "desativar", "deaktivieren", "disattiva", "accesibilidad", "acessibilidade",
         "bedienungshilfen", "accessibilità", "borrar datos", "limpar dados", "daten löschen",
         "usar rempart", "rempart verwenden", "usa rempart",
-        // batterie et lancement automatique : les restreindre laisserait le téléphone couper Rempart
+    )
+
+    /**
+     * Actions qui coupent vraiment Rempart. Ce sont les seules surveillées pendant
+     * [PowerScreensGrace] : les listes d'applis des écrans batterie ou lancement
+     * automatique contiennent souvent « VPN », « Stop »… dans le nom d'autres applis.
+     */
+    private val strongWithLabel = listOf(
+        "désinstaller", "desinstaller", "uninstall", "forcer l'arrêt", "forcer l’arrêt", "force stop",
+        "effacer les données", "vider le stockage", "clear storage", "clear data",
+        "utiliser rempart", "use rempart", "usar rempart", "rempart verwenden", "usa rempart",
+        "d'administration", "device admin", "administrateur de l'appareil",
+        "oublier", "forget", "déconnecter", "disconnect",
+        "desinstalar", "forzar detención", "forzar cierre", "forçar parada", "forçar interrupção",
+        "deinstallieren", "stopp erzwingen", "beenden erzwingen", "disinstalla",
+        "borrar datos", "limpar dados", "daten löschen",
+    )
+
+    /**
+     * Batterie et lancement automatique : les restreindre laisserait le téléphone couper
+     * Rempart. Mais ce sont aussi les écrans qui les ACCORDENT : quand Rempart ouvre
+     * lui-même l'un d'eux, [PowerScreensGrace] les laisse passer quelques minutes.
+     */
+    private val powerWithLabel = listOf(
         "batterie", "battery", "batería", "bateria", "akku", "optimis", "optimiz",
         "lancement auto", "démarrage auto", "auto-start", "autostart", "auto start", "auto-launch", "autolaunch",
         "arrière-plan", "background", "restreindre", "restrict",
@@ -60,6 +83,13 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
         "modo seguro", "abgesicherter modus", "modalità provvisoria",
     )
 
+    /**
+     * Règle qui a fait quitter le dernier écran (paquet + mot-clé), pour le diagnostic.
+     * Jamais le texte de l'écran lui-même.
+     */
+    @Volatile var lastReason: String? = null
+        private set
+
     fun evaluate(screen: ScreenSnapshot, locked: Boolean): GuardAction {
         if (!locked) return GuardAction.NONE
         if (screen.packageName == ownPackage) return GuardAction.NONE
@@ -70,15 +100,42 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
         val lower = screen.texts.map { it.lowercase() }
         val mentionsUs = lower.any { it.contains(appLabel.lowercase()) || it.contains(ownPackage) }
 
+        fun hit(words: List<String>) = words.firstOrNull { d -> lower.any { it.contains(d) } }
+        lastReason = null
+        fun leave(reason: String): GuardAction { lastReason = "$pkg: $reason"; return GuardAction.LEAVE_SCREEN }
+
         return when (screen.packageName) {
-            in installerPackages -> if (mentionsUs) GuardAction.LEAVE_SCREEN else GuardAction.NONE
-            in storePackages -> if (mentionsUs && lower.any { t -> t == "désinstaller" || t == "uninstall" }) GuardAction.LEAVE_SCREEN else GuardAction.NONE
-            in settingsPackages -> when {
-                alwaysDangerous.any { d -> lower.any { it.contains(d) } } -> GuardAction.LEAVE_SCREEN
-                mentionsUs && dangerousWithLabel.any { d -> lower.any { it.contains(d) } } -> GuardAction.LEAVE_SCREEN
-                else -> GuardAction.NONE
+            in installerPackages -> if (mentionsUs) leave("installateur") else GuardAction.NONE
+            in storePackages -> if (mentionsUs && lower.any { t -> t == "désinstaller" || t == "uninstall" }) leave("store") else GuardAction.NONE
+            in settingsPackages -> {
+                val always = hit(alwaysDangerous)
+                val grace = PowerScreensGrace.isOpen()
+                val danger = if (mentionsUs) hit(if (grace) strongWithLabel else dangerousWithLabel) else null
+                val power = if (mentionsUs && !grace) hit(powerWithLabel) else null
+                when {
+                    always != null -> leave(always)
+                    danger != null -> leave(danger)
+                    power != null -> leave(power)
+                    else -> GuardAction.NONE
+                }
             }
             else -> GuardAction.NONE
         }
     }
+}
+
+/**
+ * Courte fenêtre pendant laquelle les écrans batterie et lancement automatique de
+ * Rempart restent ouverts, parce que c'est Rempart qui vient de les ouvrir pour que
+ * l'utilisateur accorde ces droits. Les écrans vraiment dangereux (désinstaller,
+ * forcer l'arrêt, accessibilité, administrateur, VPN) restent bloqués pendant ce temps.
+ * Horloge monotone : changer l'heure du téléphone ne l'allonge pas.
+ */
+object PowerScreensGrace {
+    const val DURATION_MS = 2 * 60_000L
+    @Volatile private var openUntilNanos = Long.MIN_VALUE
+
+    fun open(nowNanos: Long = System.nanoTime()) { openUntilNanos = nowNanos + DURATION_MS * 1_000_000 }
+    fun close() { openUntilNanos = Long.MIN_VALUE }
+    fun isOpen(nowNanos: Long = System.nanoTime()): Boolean = openUntilNanos != Long.MIN_VALUE && nowNanos - openUntilNanos < 0
 }
