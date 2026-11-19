@@ -41,6 +41,7 @@ Rempart protège une personne **contre elle-même dans un moment de faiblesse**,
 - **Réinitialisation d'usine** : efface tout. Volontairement jamais bloquée.
 - **Mode sans échec** : les applis tierces n'y tournent pas. Sans mode propriétaire, on peut y retirer l'administrateur. L'interruption est journalisée au retour (« Protection interrompue »). Le mode propriétaire bloque le mode sans échec.
 - **Autre utilisateur / invité** : Rempart ne protège que l'utilisateur où il est installé. Le mode propriétaire bloque l'ajout d'utilisateurs.
+- **Arrêt forcé** : si le processus de Rempart est tué (arrêt forcé, mise à jour ratée), Android marque le service d'accessibilité comme « planté » et ne le relance qu'à sa réactivation. L'écran « Forcer l'arrêt » est protégé pendant le verrou, le filtre VPN continue de tourner (il est relancé par le système et par le battement), l'interruption est journalisée et l'accueil de Rempart signale la protection à « Réparer ».
 - **ADB** (débogage USB) : un utilisateur averti peut désactiver l'accessibilité par ADB. Ne pas laisser le débogage USB activé.
 - **VPN de contournement chiffrant tout le trafic** : s'il remplace Rempart, Rempart ne filtre plus (Android n'autorise qu'un VPN). D'où le « VPN permanent + bloquer les connexions sans VPN » et, en mode propriétaire, `DISALLOW_CONFIG_VPN`.
 - **Images dénudées sur des sites généralistes** (réseaux sociaux, recherche d'images) : couvert partiellement par SafeSearch et les mots-clés. Le classifieur d'images sur l'appareil (`:filter-image`) est prévu en option.

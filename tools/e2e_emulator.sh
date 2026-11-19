@@ -28,8 +28,12 @@ $ADB shell pm grant $PKG android.permission.POST_NOTIFICATIONS || true
 $ADB shell am set-debug-app --persistent com.android.chrome || true
 $ADB shell 'echo "_ --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line' || true
 
-# Tests d'instrumentation.
-./gradlew :app:connectedDebugAndroidTest
+# Tests d'instrumentation, lancés directement : `connectedDebugAndroidTest`
+# réinstallerait l'appli et effacerait la préparation ci-dessus.
+OUT=$($ADB shell am instrument -w -r org.tidalex.rempart.test/androidx.test.runner.AndroidJUnitRunner)
+echo "$OUT" | grep -E "INSTRUMENTATION_STATUS: (class|test)=|INSTRUMENTATION_STATUS_CODE: -2|Tests run|OK \(|FAILURES" || true
+echo "$OUT" | grep -q "FAILURES!!!" && { echo "$OUT" | grep -A6 "INSTRUMENTATION_STATUS: stack" | head -60; exit 1; }
+echo "$OUT" | grep -qE "^OK \(" || { echo "Instrumentation interrompue" >&2; echo "$OUT" | tail -20; exit 1; }
 
 # Sécurité : la désinstallation doit échouer tant que l'administrateur est actif.
 if $ADB uninstall $PKG 2>&1 | grep -q Success; then

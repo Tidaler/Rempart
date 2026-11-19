@@ -4,6 +4,8 @@ import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.provider.Settings
 import android.view.accessibility.AccessibilityEvent
@@ -27,6 +29,7 @@ class RempartAccessibilityService : AccessibilityService() {
     private val analyzer by lazy { ScreenAnalyzer(policyProvider = { Hooks.policy?.invoke(this) ?: EMPTY_POLICY }) }
     private val lastCheck = HashMap<String, Long>()
     private var lastAction = 0L
+    private val main = Handler(Looper.getMainLooper())
 
     override fun onServiceConnected() {
         connected = true
@@ -50,14 +53,16 @@ class RempartAccessibilityService : AccessibilityService() {
             ScreenDecision.Nothing -> Unit
             is ScreenDecision.BlockContent -> act(now) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
-                showBlockedScreen(decision.reason)
+                main.postDelayed({ showBlockedScreen(decision.reason) }, GLOBAL_ACTION_SETTLE_MS)
                 Hooks.onBlocked?.invoke(this, decision.reason)
             }
             ScreenDecision.LeaveProtectedSettings -> act(now) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 performGlobalAction(GLOBAL_ACTION_HOME)
                 LockRepository.get(this).record(IntegrityEvent.PROTECTED_SCREEN_BLOCKED)
-                showBlockedScreen(BlockReason.PROTECTED_SETTINGS)
+                // Les actions globales sont asynchrones : sans délai, l'écran d'accueil
+                // passerait PAR-DESSUS l'écran d'explication.
+                main.postDelayed({ showBlockedScreen(BlockReason.PROTECTED_SETTINGS) }, GLOBAL_ACTION_SETTLE_MS)
             }
         }
     }
@@ -104,6 +109,7 @@ class RempartAccessibilityService : AccessibilityService() {
         const val ACTION_BLOCKED = "org.tidalex.rempart.action.BLOCKED"
         const val EXTRA_REASON = "reason"
         private const val THROTTLE_MS = 350L
+        private const val GLOBAL_ACTION_SETTLE_MS = 400L
         private val EMPTY_POLICY = ContentPolicy(DomainBlocklist.EMPTY)
 
         @Volatile var connected = false

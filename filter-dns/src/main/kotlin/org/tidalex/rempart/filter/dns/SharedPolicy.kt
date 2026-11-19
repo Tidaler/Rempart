@@ -1,6 +1,7 @@
 package org.tidalex.rempart.filter.dns
 
 import android.content.Context
+import android.util.Log
 import org.tidalex.rempart.core.domain.ContentPolicy
 import org.tidalex.rempart.core.domain.DomainBlocklist
 
@@ -19,7 +20,13 @@ object SharedPolicy {
 
     fun reload(context: Context) {
         val app = context.applicationContext
-        policy.blocklist = BlocklistStore.loadNsfw(app)
-        policy.bypassList = BlocklistStore.loadBypass(app)
+        // En cas d'échec de lecture, le filtre tourne quand même : mots-clés,
+        // SafeSearch et résolveur amont filtrant restent actifs.
+        runCatching { BlocklistStore.loadNsfw(app) }
+            .onSuccess { policy.blocklist = it }
+            .onFailure { Log.e("RempartPolicy", "liste NSFW illisible", it) }
+        runCatching { BlocklistStore.loadBypass(app) }
+            .onSuccess { policy.bypassList = it }
+            .onFailure { Log.e("RempartPolicy", "liste DoH illisible", it) }
     }
 }

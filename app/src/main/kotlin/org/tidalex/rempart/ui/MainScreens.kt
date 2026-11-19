@@ -20,6 +20,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import org.tidalex.rempart.filter.dns.FilterSettings
 import org.tidalex.rempart.filter.dns.UpstreamChoice
 import org.tidalex.rempart.lock.LockRepository
 import org.tidalex.rempart.rememberUiTick
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.util.Date
 
@@ -59,7 +61,8 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
     val context = LocalContext.current
     val repo = LockRepository.get(context)
     rememberUiTick()
-    val lock = repo.tick()
+    val lock by repo.state.collectAsStateWithLifecycle()
+    LockTicker(repo)
     val status = Protection.status(context)
     val streakRepo = remember { StreakRepository(context) }
     var streak by remember { mutableStateOf(streakRepo.get()) }
@@ -90,10 +93,10 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
             val label = when (lock.phase) {
                 Phase.OPEN -> stringResource(R.string.home_lock_open)
                 Phase.LOCKED -> stringResource(R.string.home_lock_locked)
-                Phase.RELEASING -> stringResource(R.string.home_lock_releasing, formatDuration(lock.release!!.remainingMs))
+                Phase.RELEASING -> stringResource(R.string.home_lock_releasing, formatDuration(lock.release?.remainingMs ?: 0))
             }
             Text(label, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("lockState"))
-            if (lock.phase == Phase.RELEASING) LinearProgressIndicator(progress = { lock.release!!.progress }, modifier = Modifier.fillMaxWidth())
+            if (lock.phase == Phase.RELEASING) LinearProgressIndicator(progress = { lock.release?.progress ?: 0f }, modifier = Modifier.fillMaxWidth())
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 if (lock.isLocked) {
                     FilledTonalButton(onClick = { onNavigate("unlock") }, modifier = Modifier.testTag("goUnlock")) { Text(stringResource(R.string.home_unlock)) }
@@ -126,8 +129,8 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
 fun UnlockScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val repo = LockRepository.get(context)
-    rememberUiTick()
-    val lock = repo.tick()
+    val lock by repo.state.collectAsStateWithLifecycle()
+    LockTicker(repo)
     var code by remember { mutableStateOf("") }
     var message by remember { mutableStateOf<String?>(null) }
 
@@ -154,7 +157,7 @@ fun UnlockScreen(onBack: () -> Unit) {
                     }
                     code = ""
                 }) { Text(stringResource(R.string.unlock_submit)) }
-                lock.partnerPhone?.let { phone ->
+                lock.partnerPhone?.let { phone: String ->
                     TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_DIAL, "tel:$phone".toUri())) }) {
                         Text(stringResource(R.string.unlock_call_partner, lock.partnerName ?: phone))
                     }
@@ -166,14 +169,20 @@ fun UnlockScreen(onBack: () -> Unit) {
             Text(stringResource(R.string.unlock_delay), style = MaterialTheme.typography.titleMedium)
             Text(stringResource(R.string.unlock_delay_body, lock.delayHours), style = MaterialTheme.typography.bodyMedium)
             if (lock.phase == Phase.RELEASING) {
-                Text(stringResource(R.string.unlock_delay_running, formatDuration(lock.release!!.remainingMs)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("releaseRunning"))
-                LinearProgressIndicator(progress = { lock.release!!.progress }, modifier = Modifier.fillMaxWidth())
+                Text(stringResource(R.string.unlock_delay_running, formatDuration(lock.release?.remainingMs ?: 0)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("releaseRunning"))
+                LinearProgressIndicator(progress = { lock.release?.progress ?: 0f }, modifier = Modifier.fillMaxWidth())
                 Button(onClick = { repo.cancelRelease() }, modifier = Modifier.testTag("releaseCancel")) { Text(stringResource(R.string.unlock_delay_cancel)) }
             } else {
                 OutlinedButton(onClick = { repo.requestRelease() }, modifier = Modifier.testTag("releaseStart")) { Text(stringResource(R.string.unlock_delay_start, lock.delayHours)) }
             }
         }
     }
+}
+
+/** Fait avancer le délai et les pauses chaque seconde tant que l'écran est visible. */
+@Composable
+fun LockTicker(repo: LockRepository) {
+    LaunchedEffect(repo) { while (true) { repo.tick(); delay(1000) } }
 }
 
 @Composable

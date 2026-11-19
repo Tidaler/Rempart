@@ -46,6 +46,10 @@ Prérequis : JDK 17+ et le SDK Android (installé par Android Studio). Ouvrir le
 ./gradlew lint                      # analyse statique
 ```
 
+Tests de bout en bout sur l'émulateur (prépare le consentement VPN, l'accessibilité et l'administrateur, puis vérifie que la désinstallation est refusée) : `bash tools/e2e_emulator.sh`.
+
+État actuel : 113 tests sur PC (unitaires, intégration, sécurité, performance, traductions) et 12 tests d'instrumentation verts sur un émulateur Android 16.
+
 Mettre à jour les listes embarquées : `python tools/update_blocklists.py`.
 
 ## Licence

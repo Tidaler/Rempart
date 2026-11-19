@@ -53,5 +53,5 @@ def write(name, urls, cache, minimum):
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     cache = ROOT / "tools" / ".cache"; cache.mkdir(exist_ok=True)
-    write("nsfw.txt.gz", NSFW, cache, 50_000)
-    write("doh.txt.gz", DOH, cache, 1_000)
+    write("nsfw.txt.gzip", NSFW, cache, 50_000)  # pas .gz : AGP décompresse les assets .gz
+    write("doh.txt.gzip", DOH, cache, 1_000)
