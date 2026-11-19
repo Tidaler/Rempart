@@ -13,7 +13,7 @@
 
     <!-- Welcome / consent -->
     <string name="welcome_title">Welcome to Rempart</string>
-    <string name="welcome_body">Rempart helps you quit porn. It blocks adult websites and overly revealing images, in every browser and inside apps.\n\nIt is free and open source. No ads, no purchases. Nothing leaves your phone.</string>
+    <string name="welcome_body">Rempart helps you quit porn. It blocks adult websites and sites full of very revealing images, in every browser and inside apps.\n\nIt is free and open source. No ads, no purchases. Nothing leaves your phone.</string>
     <string name="welcome_self_use">I am installing Rempart for myself, on my own phone, of my own free will.</string>
     <string name="welcome_self_use_hint">Nobody should install it on someone else\'s phone. Rempart has no hidden mode and can\'t be used to watch anyone.</string>
     <string name="welcome_privacy_link">Read the privacy policy</string>

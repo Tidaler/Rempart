@@ -11,7 +11,7 @@
 
     <!-- Accueil / consentement -->
     <string name="welcome_title">Bienvenue dans Rempart</string>
-    <string name="welcome_body">Rempart t\'aide à arrêter le porno. Il bloque les sites pour adultes et les images trop dénudées, dans tous les navigateurs et dans les applis.\n\nC\'est gratuit et open source. Pas de pub, pas d\'achat. Rien ne sort de ton téléphone.</string>
+    <string name="welcome_body">Rempart t\'aide à arrêter le porno. Il bloque les sites pour adultes et les sites d'images très dénudées, dans tous les navigateurs et dans les applis.\n\nC\'est gratuit et open source. Pas de pub, pas d\'achat. Rien ne sort de ton téléphone.</string>
     <string name="welcome_self_use">J\'installe Rempart pour moi-même, sur mon propre téléphone, de mon plein gré.</string>
     <string name="welcome_self_use_hint">Personne ne doit l\'installer sur le téléphone de quelqu\'un d\'autre. Rempart n\'a pas de mode caché et ne permet de surveiller personne.</string>
     <string name="welcome_privacy_link">Lire la politique de confidentialité</string>
