@@ -22,8 +22,11 @@ data class ProtectionStatus(
     val admin: Boolean,
     val deviceOwner: Boolean,
     val notifications: Boolean,
+    val battery: Boolean,
+    val autoStartAvailable: Boolean,
+    val autoStartAsked: Boolean,
 ) {
-    val allEssential: Boolean get() = vpnRunning && accessibility && admin
+    val allEssential: Boolean get() = vpnRunning && accessibility && admin && battery
 }
 
 object Protection {
@@ -35,6 +38,9 @@ object Protection {
         deviceOwner = DeviceOwnerPolicies.isDeviceOwner(c),
         notifications = Build.VERSION.SDK_INT < 33 ||
             ContextCompat.checkSelfPermission(c, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED,
+        battery = Battery.isUnrestricted(c),
+        autoStartAvailable = AutoStart.isAvailable(c),
+        autoStartAsked = AutoStart.wasAsked(c),
     )
 
     /** Relance le filtre s'il devrait tourner et que le consentement VPN est toujours valable. */
@@ -56,6 +62,7 @@ object Protection {
         if (LockRepository.get(c).isLocked) return false
         RempartVpnService.stop(c)
         RempartAdminReceiver.deactivate(c)
+        RempartAccessibilityService.turnOff() // sinon les pages restaient fermées après « Tout couper »
         return true
     }
 }

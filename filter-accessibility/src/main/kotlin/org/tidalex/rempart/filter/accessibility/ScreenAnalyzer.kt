@@ -87,7 +87,12 @@ class ScreenAnalyzer(
         }
         val id = node.viewId
         if (text != null && id != null && Browsers.isUrlBarId(id)) c.urlBars += text
-        for (i in 0 until node.childCount) node.child(i)?.let { collect(it, depth + 1, inWeb, c) }
+        // Sur Android, chaque child(i) est un appel système : on s'arrête dès que le budget est épuisé,
+        // au lieu de parcourir des milliers d'enfants pour rien (grosses pages web).
+        for (i in 0 until node.childCount) {
+            if (c.count >= maxNodes) return
+            node.child(i)?.let { collect(it, depth + 1, inWeb, c) }
+        }
     }
 
     companion object {

@@ -55,7 +55,7 @@ bash tools/e2e_emulator.sh      # tests sur l'émulateur ou un téléphone de te
 
 Le script `e2e_emulator.sh` prépare l'appareil (VPN, accessibilité, administrateur), lance les tests, puis vérifie qu'Android refuse bien la désinstallation.
 
-Aujourd'hui, 113 tests passent sur PC et 12 sur un émulateur Android 16.
+Aujourd'hui, 117 tests passent sur PC et 13 sur un émulateur Android 16.
 
 Pour mettre à jour les listes livrées avec l'appli : `python tools/update_blocklists.py`.
 

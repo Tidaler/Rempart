@@ -66,11 +66,16 @@ fun RempartNav() {
     val start = when {
         !Onboarding.consented(context) -> "welcome"
         !Onboarding.partnerStepDone(context) -> "setup"
+        // Après une mise à jour ou un réglage modifié : on redemande d'abord ce qui manque.
+        Permissions.autoPrompt && Permissions.missingEssential(context).isNotEmpty() -> "setup"
         else -> "home"
     }
     NavHost(nav, startDestination = start) {
         composable("welcome") { WelcomeScreen(onAccept = { Onboarding.setConsented(context); nav.navigate("setup") { popUpTo("welcome") { inclusive = true } } }, onPrivacy = { nav.navigate("about") }) }
-        composable("setup") { SetupScreen(onNext = { nav.navigate("partner") }) }
+        composable("setup") {
+            val done = Onboarding.partnerStepDone(context)
+            SetupScreen(onboardingDone = done, onNext = { if (done) nav.navigate("home") { popUpTo(0) } else nav.navigate("partner") })
+        }
         composable("partner") { PartnerScreen(onDone = { Onboarding.setPartnerStepDone(context); nav.navigate("lock") }, onBack = { nav.popBackStack() }) }
         composable("lock") { LockScreen(onDone = { nav.navigate("home") { popUpTo(0) } }, onBack = { nav.popBackStack() }, onFix = { nav.navigate("setup") }) }
         composable("home") { HomeScreen(onNavigate = { nav.navigate(it) }) }

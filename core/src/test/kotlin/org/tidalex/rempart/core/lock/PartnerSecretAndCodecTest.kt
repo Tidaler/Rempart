@@ -59,6 +59,12 @@ class PartnerSecretAndCodecTest {
         assertThat(LockStateCodec.decode(mapOf("phase" to "LOCKED", "delayHours" to "0")).delayHours).isEqualTo(72)
     }
 
+    @Test fun `damaged partner fingerprint never crashes and never unlocks`() {
+        val broken = PartnerSecret.deserialize("120000:%%%pas-du-base64%%%:@@@")!!
+        assertThat(broken.matches("ABCD-EFGH-JKMN")).isFalse()
+        assertThat(PartnerSecret("AAAA", "AAAA", 0).matches("ABCD-EFGH-JKMN")).isFalse()
+    }
+
     @Test fun `empty storage means fresh install, open`() {
         assertThat(LockStateCodec.decode(emptyMap()).phase).isEqualTo(Phase.OPEN)
     }

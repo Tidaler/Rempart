@@ -194,4 +194,17 @@
         <item quantity="other">Listes : %1$d domaines</item>
         <item quantity="many">Listes : %1$d domaines</item>
     </plurals>
+    <string name="setup_all_button">Tout autoriser</string>
+    <string name="setup_all_hint">Rempart va ouvrir chaque écran d\'autorisation, l\'un après l\'autre. Dis oui à chaque fois, puis reviens ici.</string>
+    <string name="setup_battery_title">Aucune limite de batterie</string>
+    <string name="setup_battery_body">Pour qu\'Android ne coupe jamais le filtre pour économiser la batterie. Rempart consomme très peu.</string>
+    <string name="setup_autostart_title">Lancement automatique</string>
+    <string name="setup_autostart_body">Ton téléphone empêche les applis de démarrer toutes seules. Dans l\'écran qui s\'ouvre, active Rempart pour qu\'il redémarre après un redémarrage du téléphone.</string>
+    <string name="setup_autostart_button">Ouvrir</string>
+    <string name="setup_back_home">Retour à l\'accueil</string>
+    <string name="home_status_battery">Aucune limite de batterie</string>
+    <string name="partner_locked_note">Rempart est verrouillé, tu ne peux pas changer de partenaire pour l\'instant. Tu pourras le faire une fois déverrouillé.</string>
+    <string name="permissions_channel">Autorisations</string>
+    <string name="permissions_notif_title">Rempart a besoin de ton accord</string>
+    <string name="permissions_notif_text">Une autorisation a sauté avec la mise à jour. Touche ici pour la redonner.</string>
 </resources>

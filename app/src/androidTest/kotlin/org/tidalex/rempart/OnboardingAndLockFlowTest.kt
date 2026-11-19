@@ -34,12 +34,13 @@ class OnboardingAndLockFlowTest {
     private var scenario: ActivityScenario<MainActivity>? = null
 
     @Before fun openLock() {
-        if (repo.isLocked) repo.unlockWithPartnerCode(testCode)
+        Permissions.autoPrompt = false // pas d'écrans système pendant les tests d'interface
+        TestLockReset.reset(context)
     }
 
     @After fun close() {
         scenario?.close()
-        if (repo.isLocked) repo.unlockWithPartnerCode(testCode)
+        TestLockReset.reset(context)
     }
 
     private fun launch() { scenario = ActivityScenario.launch(MainActivity::class.java) }
@@ -55,6 +56,18 @@ class OnboardingAndLockFlowTest {
         compose.onNodeWithTag("welcomeContinue").assertIsNotEnabled()
         compose.onNodeWithTag("selfUse").performClick()
         compose.onNodeWithTag("welcomeContinue").assertIsEnabled()
+    }
+
+    /** Régression : changer de partenaire pendant le verrouillage faisait planter l'appli. */
+    @Test fun partnerCannotBeChangedWhileLocked() {
+        Onboarding.setConsented(context)
+        context.getSharedPreferences("rempart_onboarding", 0).edit(commit = true) { putBoolean("partnerDone", false) }
+        repo.setPartner(testCode, "Test", null)
+        repo.engage()
+        launch()
+        compose.onNodeWithTag("setupNext").performScrollTo().performClick()
+        compose.onNodeWithTag("partnerLocked").assertExists()
+        assertThat(repo.isLocked).isTrue()
     }
 
     @Test fun partnerUnlockFlowThroughTheUi() {

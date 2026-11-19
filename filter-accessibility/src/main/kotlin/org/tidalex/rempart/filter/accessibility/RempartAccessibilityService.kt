@@ -33,6 +33,7 @@ class RempartAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         connected = true
+        instance = this
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
@@ -84,6 +85,7 @@ class RempartAccessibilityService : AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         connected = false
+        instance = null
         val repo = LockRepository.get(this)
         if (repo.isLocked) repo.record(IntegrityEvent.ACCESSIBILITY_LOST)
         return super.onUnbind(intent)
@@ -114,6 +116,13 @@ class RempartAccessibilityService : AccessibilityService() {
 
         @Volatile var connected = false
             private set
+
+        @Volatile private var instance: RempartAccessibilityService? = null
+
+        /** Arrêt demandé depuis l'appli (protection ouverte seulement, vérifié par l'appelant). */
+        fun turnOff() {
+            instance?.let { svc -> svc.main.post { runCatching { svc.disableSelf() } } }
+        }
 
         /** Vérité système : le service est-il activé dans les réglages ? */
         fun isEnabled(context: Context): Boolean {

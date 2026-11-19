@@ -13,12 +13,13 @@ import javax.crypto.spec.PBEKeySpec
  */
 data class PartnerSecret(val saltB64: String, val hashB64: String, val iterations: Int) {
 
-    fun matches(candidate: String): Boolean {
+    /** Une empreinte abîmée ne fait jamais planter l'appli : elle ne correspond à rien (on reste verrouillé). */
+    fun matches(candidate: String): Boolean = runCatching {
         val salt = Base64.getDecoder().decode(saltB64)
         val expected = Base64.getDecoder().decode(hashB64)
         val actual = derive(normalize(candidate), salt, iterations)
-        return MessageDigest.isEqual(expected, actual) // comparaison en temps constant
-    }
+        MessageDigest.isEqual(expected, actual) // comparaison en temps constant
+    }.getOrDefault(false)
 
     fun serialize(): String = "$iterations:$saltB64:$hashB64"
 

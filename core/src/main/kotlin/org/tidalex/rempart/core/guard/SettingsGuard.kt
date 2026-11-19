@@ -47,6 +47,10 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
         "desactivar", "desativar", "deaktivieren", "disattiva", "accesibilidad", "acessibilidade",
         "bedienungshilfen", "accessibilità", "borrar datos", "limpar dados", "daten löschen",
         "usar rempart", "rempart verwenden", "usa rempart",
+        // batterie et lancement automatique : les restreindre laisserait le téléphone couper Rempart
+        "batterie", "battery", "batería", "bateria", "akku", "optimis", "optimiz",
+        "lancement auto", "démarrage auto", "auto-start", "autostart", "auto start", "auto-launch", "autolaunch",
+        "arrière-plan", "background", "restreindre", "restrict",
     )
 
     /** Écrans dangereux même sans mention de Rempart. */
@@ -59,6 +63,10 @@ class SettingsGuard(private val appLabel: String = "Rempart", private val ownPac
     fun evaluate(screen: ScreenSnapshot, locked: Boolean): GuardAction {
         if (!locked) return GuardAction.NONE
         if (screen.packageName == ownPackage) return GuardAction.NONE
+        // Seuls les réglages, l'installateur et le Play Store sont surveillés : inutile de
+        // préparer le texte des autres applis (navigateurs…), appelées bien plus souvent.
+        val pkg = screen.packageName
+        if (pkg !in settingsPackages && pkg !in installerPackages && pkg !in storePackages) return GuardAction.NONE
         val lower = screen.texts.map { it.lowercase() }
         val mentionsUs = lower.any { it.contains(appLabel.lowercase()) || it.contains(ownPackage) }
 

@@ -111,8 +111,15 @@ class RempartVpnService : VpnService() {
         }
     }
 
+    /** Nouvelles listes et nouveaux réglages, appliqués sans couper le filtre. */
     private fun reload() {
         SharedPolicy.reload(this)
+        val settings = FilterSettings(this)
+        engine?.apply {
+            safeSearch = settings.safeSearch
+            youtubeRestricted = settings.youtubeRestricted
+            upstream = UdpUpstream.of(settings.upstream) { protect(it) }
+        }
     }
 
     override fun onRevoke() {
@@ -220,8 +227,11 @@ class RempartVpnService : VpnService() {
             context.startService(Intent(context, RempartVpnService::class.java).setAction(ACTION_STOP))
         }
 
+        /** Recharge les listes et les réglages (SafeSearch, YouTube, résolveur) dans le filtre en marche. */
         fun reloadBlocklist(context: Context) {
-            if (_running.value) context.startService(Intent(context, RempartVpnService::class.java).setAction(ACTION_RELOAD))
+            if (_running.value) runCatching { context.startService(Intent(context, RempartVpnService::class.java).setAction(ACTION_RELOAD)) }
         }
+
+        fun applySettings(context: Context) = reloadBlocklist(context)
     }
 }

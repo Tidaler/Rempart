@@ -51,6 +51,14 @@ class SettingsGuardTest {
         assertThat(guard.evaluate(s("com.android.settings", "DNS privado"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
     }
 
+    @Test fun `battery and auto-start pages of Rempart are blocked while locked`() {
+        assertThat(guard.evaluate(s("com.android.settings", "Optimisation de la batterie", "Rempart", "Ne pas optimiser"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.transsion.phonemaster", "Lancement automatique", "Rempart"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.miui.securitycenter", "Autostart", "Rempart"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.android.settings", "Battery usage", "Rempart", "Restricted"), true)).isEqualTo(GuardAction.LEAVE_SCREEN)
+        assertThat(guard.evaluate(s("com.android.settings", "Optimisation de la batterie", "WhatsApp"), true)).isEqualTo(GuardAction.NONE)
+    }
+
     @Test fun `nothing is blocked when the lock is open`() {
         assertThat(guard.evaluate(s("com.android.settings", "Rempart", "Désinstaller"), false)).isEqualTo(GuardAction.NONE)
     }

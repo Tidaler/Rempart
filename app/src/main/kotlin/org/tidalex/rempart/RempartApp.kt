@@ -34,7 +34,11 @@ class RempartApp : Application() {
                     RempartVpnService.Events.Type.STARTED -> Unit
                 }
             }
-            HeartbeatWorker.onBeat = { c -> Protection.ensureVpnRunning(c) }
+            HeartbeatWorker.onBeat = { c, periodic ->
+                val repo = LockRepository.get(c)
+                if (periodic && repo.isLocked && !RempartVpnService.running.value) repo.record(IntegrityEvent.PROTECTION_GAP)
+                Protection.ensureVpnRunning(c)
+            }
         }
     }
 }
